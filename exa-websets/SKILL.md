@@ -34,7 +34,7 @@ Manage websets and the complete ecosystem for building, enriching, and monitorin
 - `webset-update`: Update webset configuration
 - `webset-delete`: Delete a webset
 
-For detailed syntax, consult [commands/webset-create.md](commands/webset-create.md).
+For detailed syntax, consult [reference/webset-create.md](reference/webset-create.md).
 
 ### Webset Searches
 - `webset-search-create`: Create search to add items
@@ -53,7 +53,7 @@ For detailed syntax, consult [commands/webset-create.md](commands/webset-create.
 - `enrichment-update`: Update enrichment configuration
 - `enrichment-delete`: Delete an enrichment
 
-For detailed syntax, consult [commands/enrichment-create.md](commands/enrichment-create.md).
+For detailed syntax, consult [reference/enrichment-create.md](reference/enrichment-create.md).
 
 ### Imports
 - `import-create`: Upload CSV file to create webset
@@ -66,7 +66,7 @@ For detailed syntax, consult [commands/enrichment-create.md](commands/enrichment
 - `monitor-list`: List all monitors
 - `monitor-runs-list`: List monitor execution history
 
-For detailed syntax, consult [commands/monitor-create.md](commands/monitor-create.md).
+For detailed syntax, consult [reference/monitor-create.md](reference/monitor-create.md).
 
 ## Quick Start
 
@@ -131,4 +131,4 @@ exa-ai enrichment-create $webset_id \
 
 ## Common Workflows
 
-For complete workflows and examples, consult [commands/webset-create.md](commands/webset-create.md), [commands/enrichment-create.md](commands/enrichment-create.md), and [commands/monitor-create.md](commands/monitor-create.md).
+For complete workflows and examples, consult [reference/webset-create.md](reference/webset-create.md), [reference/enrichment-create.md](reference/enrichment-create.md), and [reference/monitor-create.md](reference/monitor-create.md).

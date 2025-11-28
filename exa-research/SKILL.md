@@ -37,7 +37,7 @@ Initiate a new research task with instructions.
 exa-ai research-start --instructions "Find the top 10 Ruby performance optimization techniques" --wait
 ```
 
-For detailed options and examples, consult [commands/research-start.md](commands/research-start.md).
+For detailed options and examples, consult [reference/research-start.md](reference/research-start.md).
 
 ### research-get
 Check status and retrieve results of a research task.
@@ -46,7 +46,7 @@ Check status and retrieve results of a research task.
 exa-ai research-get research_abc123
 ```
 
-For detailed options and examples, consult [commands/research-get.md](commands/research-get.md).
+For detailed options and examples, consult [reference/research-get.md](reference/research-get.md).
 
 ### research-list
 List all your research tasks with pagination.
@@ -55,7 +55,7 @@ List all your research tasks with pagination.
 exa-ai research-list --limit 10
 ```
 
-For detailed options and examples, consult [commands/research-list.md](commands/research-list.md).
+For detailed options and examples, consult [reference/research-list.md](reference/research-list.md).
 
 ## Research Models
 

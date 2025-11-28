@@ -78,7 +78,7 @@ Claude: [Uses exa-research skill]
 
 Each skill includes:
 - **SKILL.md**: Quick reference loaded when skill is invoked (~120-135 lines)
-- **commands/**: Detailed per-command documentation loaded when needed
+- **reference/**: Detailed per-command documentation loaded when needed
 
 Browse the documentation:
 - [exa-core/](./exa-core/) - 5 core search commands

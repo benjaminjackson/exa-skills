@@ -46,7 +46,7 @@ Search the web for content matching a query.
 exa-ai search "Anthropic Claude new features" --num-results 5 --output-format toon
 ```
 
-For detailed options and examples, consult [commands/search.md](commands/search.md).
+For detailed options and examples, consult [reference/search.md](reference/search.md).
 
 ### find-similar
 Find content similar to a given URL.
@@ -55,7 +55,7 @@ Find content similar to a given URL.
 exa-ai find-similar "https://anthropic.com/claude" --num-results 3
 ```
 
-For detailed options and examples, consult [commands/find-similar.md](commands/find-similar.md).
+For detailed options and examples, consult [reference/find-similar.md](reference/find-similar.md).
 
 ### answer
 Generate an answer to a question with structured output.
@@ -65,7 +65,7 @@ exa-ai answer "What is Anthropic's main product?" \
   --output-schema '{"type":"object","properties":{"product":{"type":"string"},"description":{"type":"string"}}}'
 ```
 
-For detailed options and examples, consult [commands/answer.md](commands/answer.md).
+For detailed options and examples, consult [reference/answer.md](reference/answer.md).
 
 ### context
 Get code context from repositories.
@@ -74,7 +74,7 @@ Get code context from repositories.
 exa-ai context "React hooks best practices" --tokens-num 5000 --output-format toon
 ```
 
-For detailed options and examples, consult [commands/context.md](commands/context.md).
+For detailed options and examples, consult [reference/context.md](reference/context.md).
 
 ### get-contents
 Retrieve page contents with optional summarization.
@@ -83,7 +83,7 @@ Retrieve page contents with optional summarization.
 exa-ai get-contents "https://anthropic.com" --summary --output-format toon
 ```
 
-For detailed options and examples, consult [commands/get-contents.md](commands/get-contents.md).
+For detailed options and examples, consult [reference/get-contents.md](reference/get-contents.md).
 
 ## Quick Examples
 
