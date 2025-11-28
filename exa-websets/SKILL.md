@@ -1,6 +1,6 @@
 ---
 name: exa-websets
-description: Manage websets, collections, enrichments, imports, and monitors in exa-ai. Use when creating/managing websets, running searches, managing items, creating enrichments, imports, or monitors for data collection and automation.
+description: Use when the user mentions Exa websets or when the workflow benefits from creating structured, CSV-like collections of search results validated against multiple independent criteria, enriched with additional search data.
 ---
 
 # Exa Websets

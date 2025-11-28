@@ -1,6 +1,6 @@
 ---
 name: exa-core
-description: Use exa-ai core search commands with token-efficient strategies. Use when working with search, find-similar, answer, context, get-contents commands, or extracting structured data from web content.
+description: Use when the user mentions Exa search OR when the workflow benefits from web search, finding similar content, structured data extraction from URLs, summarization of URLs, code samples, or answering questions with citations from web sources. 
 ---
 
 # Exa Core Search

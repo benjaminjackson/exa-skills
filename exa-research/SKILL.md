@@ -1,6 +1,6 @@
 ---
 name: exa-research
-description: Manage async research tasks with exa-ai. Use when starting research tasks, checking research status, or listing research tasks. Ideal for complex, multi-step research workflows.
+description: Use when the user mentions Exa research OR when the workflow benefits from complex, multi-step research and other exa-ai approaches are not yielding satisfactory results.
 ---
 
 # Exa Research Tasks
