@@ -34,12 +34,14 @@ Manage websets and the complete ecosystem for building, enriching, and monitorin
 - `webset-update`: Update webset configuration
 - `webset-delete`: Delete a webset
 
-For detailed syntax, consult [reference/webset-create.md](reference/webset-create.md).
+For detailed syntax, consult [reference/websets.md](reference/websets.md).
 
 ### Webset Searches
 - `webset-search-create`: Create search to add items
 - `webset-search-get`: Get search details/results
 - `webset-search-cancel`: Cancel a running search
+
+For detailed syntax, consult [reference/searches.md](reference/searches.md).
 
 ### Webset Items
 - `webset-item-list`: List items in webset
@@ -53,12 +55,14 @@ For detailed syntax, consult [reference/webset-create.md](reference/webset-creat
 - `enrichment-update`: Update enrichment configuration
 - `enrichment-delete`: Delete an enrichment
 
-For detailed syntax, consult [reference/enrichment-create.md](reference/enrichment-create.md).
+For detailed syntax, consult [reference/items.md](reference/items.md).
 
 ### Imports
 - `import-create`: Upload CSV file to create webset
 - `import-list`: List all imports
 - `import-get`: Get import details
+
+For detailed syntax, consult [reference/imports.md](reference/imports.md).
 
 ### Monitors
 - `monitor-create`: Create scheduled automation (search or refresh)
@@ -66,7 +70,7 @@ For detailed syntax, consult [reference/enrichment-create.md](reference/enrichme
 - `monitor-list`: List all monitors
 - `monitor-runs-list`: List monitor execution history
 
-For detailed syntax, consult [reference/monitor-create.md](reference/monitor-create.md).
+For detailed syntax, consult [reference/monitors.md](reference/monitors.md).
 
 ## Quick Start
 
@@ -131,4 +135,9 @@ exa-ai enrichment-create $webset_id \
 
 ## Common Workflows
 
-For complete workflows and examples, consult [reference/webset-create.md](reference/webset-create.md), [reference/enrichment-create.md](reference/enrichment-create.md), and [reference/monitor-create.md](reference/monitor-create.md).
+For complete workflows and examples, consult:
+- [reference/websets.md](reference/websets.md) - Core webset operations
+- [reference/items.md](reference/items.md) - Item management and enrichments
+- [reference/searches.md](reference/searches.md) - Search operations
+- [reference/monitors.md](reference/monitors.md) - Automation and monitoring
+- [reference/imports.md](reference/imports.md) - CSV imports
