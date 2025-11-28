@@ -103,10 +103,9 @@ exa-ai search "ChatGPT updates" --start-published-date "2024-01-01" --num-result
 
 ### Token-Optimized Workflow
 ```bash
-# Maximum token efficiency: toon format + jq extraction + limited results
+# Maximum token efficiency: JSON + jq extraction + limited results
 exa-ai search "best practices for REST APIs" \
-  --num-results 3 \
-  --output-format toon | jq -r '.results[] | {title: .title, url: .url}'
+  --num-results 3 | jq -r '.results[] | {title: .title, url: .url}'
 ```
 
 ## Token Usage Comparison
@@ -115,11 +114,11 @@ exa-ai search "best practices for REST APIs" \
 # ❌ Full JSON (~1000 tokens for 5 results)
 exa-ai search "AI news" --num-results 5
 
-# ✅ toon format (~600 tokens - 40% savings)
+# ✅ toon format for direct reading (~600 tokens - 40% savings)
 exa-ai search "AI news" --num-results 5 --output-format toon
 
-# ✅✅ toon + jq (~100 tokens - 90% savings)
-exa-ai search "AI news" --num-results 5 --output-format toon | jq -r '.results[].title'
+# ✅✅ JSON + jq for field extraction (~100 tokens - 90% savings)
+exa-ai search "AI news" --num-results 5 | jq -r '.results[].title'
 ```
 
 ## Complete Options

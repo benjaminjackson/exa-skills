@@ -103,14 +103,17 @@ exa-ai get-contents "https://example.com" \
 # ❌ High token usage - full text
 exa-ai get-contents "https://example.com" --text
 
-# ✅ Better - summary only
+# ✅ Better - summary only with jq extraction
 exa-ai get-contents "https://example.com" --summary | jq '.results[].summary'
 
-# ✅ Best - structured extraction with schema
+# ✅ Best - structured extraction with schema + jq
 exa-ai get-contents "https://example.com" \
   --summary \
-  --summary-schema '{"type":"object","properties":{"key_info":{"type":"string"}}}' \
-  --output-format toon | jq -r '.results[].summary | fromjson | .key_info'
+  --summary-schema '{"type":"object","properties":{"key_info":{"type":"string"}}}' | \
+  jq -r '.results[].summary | fromjson | .key_info'
+
+# ✅ Alternative - toon format for direct reading (no jq)
+exa-ai get-contents "https://example.com" --summary --output-format toon
 ```
 
 ## Workflow Example: Extract Product Info from Multiple Companies

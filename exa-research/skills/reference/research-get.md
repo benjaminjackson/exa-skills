@@ -118,11 +118,11 @@ done
 # ❌ Full JSON
 exa-ai research-get research_abc123
 
-# ✅ toon format (40% savings)
+# ✅ toon format for direct reading (40% savings)
 exa-ai research-get research_abc123 --output-format toon
 
-# ✅✅ Extract only result (67% savings)
-exa-ai research-get research_abc123 --output-format toon | jq -r '.result'
+# ✅✅ JSON + jq to extract only result (90% savings)
+exa-ai research-get research_abc123 | jq -r '.result'
 ```
 
 ## Complete Options

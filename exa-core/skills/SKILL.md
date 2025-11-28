@@ -22,19 +22,30 @@ Token-efficient strategies for using exa-ai core search commands.
 
 **Apply these strategies to all commands:**
 
-- **Use toon format**: `--output-format toon` for 40% fewer tokens than JSON
-- **Pipe to jq**: Extract only needed fields instead of full responses
+- **Use toon format**: `--output-format toon` for 40% fewer tokens than JSON (use when reading output directly)
+- **Use JSON + jq**: Extract only needed fields with jq (use when piping/processing output)
 - **Use --summary**: Get AI-generated summaries instead of full page text
-- **Use schemas**: Extract structured data directly with `--summary-schema` or `--output-schema`
+- **Use schemas**: Extract structured data with `--summary-schema` or `--output-schema` (always pipe to jq)
 - **Limit results**: Use `--num-results N` to get only what you need
 
-Example:
+**IMPORTANT**: Choose one approach, don't mix them:
+- **Approach 1: toon only** - Compact YAML-like output for direct reading
+- **Approach 2: JSON + jq** - Extract specific fields programmatically
+- **Approach 3: Schemas + jq** - Get structured data, always use JSON output (default) and pipe to jq
+
+Examples:
 ```bash
 # ❌ High token usage
 exa-ai search "AI news" --num-results 10
 
-# ✅ Optimized (90% reduction)
-exa-ai search "AI news" --num-results 3 --output-format toon | jq -r '.results[].title'
+# ✅ Approach 1: toon format for direct reading (60% reduction)
+exa-ai search "AI news" --num-results 3 --output-format toon
+
+# ✅ Approach 2: JSON + jq for field extraction (90% reduction)
+exa-ai search "AI news" --num-results 3 | jq -r '.results[].title'
+
+# ❌ Don't mix toon with jq (toon is YAML-like, not JSON)
+exa-ai search "AI news" --output-format toon | jq -r '.results[].title'
 ```
 
 ## Commands
@@ -97,10 +108,10 @@ exa-ai search "AI safety research papers 2024" \
 
 ### Multi-Step Workflow: Search → Extract
 ```bash
-# Step 1: Search for relevant URLs
-urls=$(exa-ai search "Anthropic research" --num-results 3 --output-format toon | jq -r '.results[].url')
+# Step 1: Search for relevant URLs (using JSON + jq)
+urls=$(exa-ai search "Anthropic research" --num-results 3 | jq -r '.results[].url')
 
-# Step 2: Extract structured data from each
+# Step 2: Extract structured data from each (using schema + jq)
 for url in $urls; do
   exa-ai get-contents "$url" \
     --summary \

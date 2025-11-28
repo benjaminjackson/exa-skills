@@ -109,7 +109,7 @@ status=$(exa-ai research-get $research_id | jq -r '.status')
 
 # Get results when complete
 if [ "$status" = "completed" ]; then
-  exa-ai research-get $research_id --output-format toon | jq -r '.result'
+  exa-ai research-get $research_id | jq -r '.result'
 fi
 ```
 

@@ -27,47 +27,52 @@ Complete reference for all exa-ai core search commands.
 }
 ```
 
-### Token Optimization (toon Format)
+### Token Optimization Strategies
 
-The `--output-format toon` option provides a YAML-like format that uses approximately 40% fewer tokens than JSON.
+**Three approaches - choose ONE, don't mix them:**
 
-**Note**: `toon` format is not listed in `--help` output, but is fully supported and recommended for token efficiency.
+#### Approach 1: toon Format (YAML-like)
+The `--output-format toon` option provides a YAML-like format that uses approximately 40% fewer tokens than JSON. Use this when you want compact output for direct reading.
+
+**Note**: `toon` format is not listed in `--help` output, but is fully supported.
 
 ```bash
-# Standard formats (documented in --help)
---output-format json    # Default JSON format
---output-format pretty  # Pretty-printed JSON
---output-format text    # Plain text
-
-# Undocumented but supported
---output-format toon    # YAML-like format, 40% fewer tokens
+# Use toon for direct reading - DO NOT pipe to jq
+exa-ai search "AI news" --output-format toon
 ```
 
-### jq Integration Techniques
-
-Extract only what you need to minimize token usage:
+#### Approach 2: JSON + jq
+Use default JSON output and extract specific fields with jq for maximum token efficiency when processing programmatically.
 
 ```bash
 # Extract single field
-command | jq -r '.results[].field_name'
+exa-ai search "AI news" | jq -r '.results[].title'
 
 # Extract multiple fields
-command | jq -r '.results[] | "\(.field1): \(.field2)"'
-
-# Parse JSON from summary
-command | jq -r '.results[].summary | fromjson | .field'
+exa-ai search "AI news" | jq -r '.results[] | "\(.title): \(.url)"'
 
 # Format as list
-command | jq -r '.results[] | "- \(.title)"'
+exa-ai search "AI news" | jq -r '.results[] | "- \(.title)"'
+```
+
+#### Approach 3: Schemas + jq
+Use schemas to get structured data extraction, then parse with jq. Always use JSON output (default) with schemas.
+
+```bash
+# Schema returns JSON string in summary field - parse with fromjson
+exa-ai search "AI news" --summary \
+  --summary-schema '{"type":"object","properties":{"headline":{"type":"string"}}}' | \
+  jq -r '.results[].summary | fromjson | .headline'
 ```
 
 ### Output Formatting Best Practices
 
-1. Always use `--output-format toon` for minimal tokens
-2. Pipe to `jq` to extract specific fields
-3. Use `--summary` instead of `--text` when possible
-4. Limit results with `--num-results` to only what you need
-5. Use schemas to get structured data directly
+1. **For direct reading**: Use `--output-format toon` (don't pipe to jq)
+2. **For field extraction**: Use JSON (default) + `jq`
+3. **For structured data**: Use schemas with JSON + `jq`
+4. **Never mix**: Don't use `--output-format toon` with `jq` (toon is YAML-like, not JSON)
+5. Use `--summary` instead of `--text` when possible
+6. Limit results with `--num-results` to only what you need
 
 ---
 
@@ -383,17 +388,19 @@ exa-ai get-contents "https://example.com" --links 5 --image-links 10
 # Full JSON (baseline): ~1000 tokens
 exa-ai search "AI news" --num-results 5
 
-# Toon format: ~600 tokens (40% savings)
+# Approach 1: Toon format for direct reading: ~600 tokens (40% savings)
 exa-ai search "AI news" --num-results 5 --output-format toon
 
-# Toon + jq extraction: ~100 tokens (90% savings)
-exa-ai search "AI news" --num-results 5 --output-format toon | jq -r '.results[] | .title'
+# Approach 2: JSON + jq for field extraction: ~100 tokens (90% savings)
+exa-ai search "AI news" --num-results 5 | jq -r '.results[].title'
 
-# With summary + schema: ~200 tokens (80% savings)
-exa-ai search "AI news" --summary --summary-schema '{"type":"object","properties":{"headline":{"type":"string"}}}' --num-results 5 | jq -r '.results[].summary | fromjson | .headline'
+# Approach 3: Schema + jq for structured data: ~200 tokens (80% savings)
+exa-ai search "AI news" --summary \
+  --summary-schema '{"type":"object","properties":{"headline":{"type":"string"}}}' \
+  --num-results 5 | jq -r '.results[].summary | fromjson | .headline'
 ```
 
-**Recommendation**: Always combine `--output-format toon` with `jq` extraction for maximum token efficiency.
+**Recommendation**: Use JSON (default) + `jq` for maximum token efficiency when extracting fields. Use toon format only for direct reading. Never mix toon with jq.
 
 ---
 
