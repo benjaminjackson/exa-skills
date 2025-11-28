@@ -12,7 +12,7 @@ exa-ai answer QUERY [OPTIONS]
 
 - `QUERY`: Question or query to answer
 
-## Common Options 
+## Common Options
 
 ### Output Control
 - `--output-schema JSON`: JSON schema for structured output (must use object wrapper!)
