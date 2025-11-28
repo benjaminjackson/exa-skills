@@ -1,0 +1,31 @@
+{
+  "name": "exa-skills",
+  "owner": {
+    "name": "Benjamin Jackson",
+    "email": "ben@hearmeout.co"
+  },
+  "metadata": {
+    "description": "Skills for using the Exa.ai API efficiently",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "exa-core",
+      "description": "Use exa-ai core search commands with token-efficient strategies. Covers search, find-similar, answer, context, get-contents commands and structured data extraction.",
+      "source": "./exa-core",
+      "strict": false
+    },
+    {
+      "name": "exa-research",
+      "description": "Manage async research tasks with exa-ai for complex research workflows",
+      "source": "./exa-research",
+      "strict": false
+    },
+    {
+      "name": "exa-websets",
+      "description": "Manage websets, collections, enrichments, imports, and monitors in exa-ai",
+      "source": "./exa-websets",
+      "strict": false
+    }
+  ]
+}
