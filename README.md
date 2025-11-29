@@ -10,10 +10,8 @@ AI-powered search, code context, and data collection for Claude Code via Exa.ai.
 - [What's Included](#whats-included)
 - [Documentation](#documentation)
 - [Example Workflows](#example-workflows)
-- [Verification](#verification)
-- [Contributing](#contributing)
 - [License](#license)
-- [Credits](#credits)
+- [Support](#support)
 
 ## Overview
 
@@ -116,56 +114,13 @@ You: "Research the top 5 programming languages for 2024 and return as structured
 Claude: [Uses exa-research with structured output]
 ```
 
-## Verification
-
-To verify installation:
-
-1. Check the skills are available:
-   ```
-   /plugin
-   ```
-   You should see exa-core, exa-research, and exa-websets listed.
-
-2. Verify the Ruby gem is installed:
-   ```bash
-   gem list exa-ai
-   ```
-
-3. Test with Claude Code:
-   ```
-   Use exa to search for "TypeScript async/await patterns"
-   ```
-
-Claude should automatically activate the skills with best practices.
-
-## Contributing
-
-Contributions welcome! See individual skill directories for documentation structure.
-
-**Development Setup:**
-
-```bash
-# Clone the repository
-git clone https://github.com/benjaminjackson/exa-skills.git ~/github/exa-skills
-
-# Claude Code will auto-discover it for local development
-```
-
-**Contribution workflow:**
-
-1. Fork the repository
-2. Create a feature branch
-3. Test with Claude Code
-4. Submit a pull request
-
 ## License
 
 MIT License - see [LICENSE](./LICENSE)
 
-## Credits
+## Support
 
-Created by Benjamin Jackson ([@benjaminjackson](https://github.com/benjaminjackson))
-
-For [Claude Code](https://claude.com/claude-code) and [Exa.ai](https://exa.ai)
-
-Version 1.0.0
+- **Author**: Benjamin Jackson ([@benjaminjackson](https://github.com/benjaminjackson))
+- **Issues**: [GitHub Issues](https://github.com/benjaminjackson/exa-skills/issues)
+- **Exa.ai**: [Exa Documentation](https://docs.exa.ai)
+- **Claude Code**: [Claude Code Documentation](https://docs.claude.com/en/docs/claude-code)
