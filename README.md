@@ -1,6 +1,19 @@
 # Exa Skills
 
-Claude Code skills for using Exa.ai efficiently.
+AI-powered search, code context, and data collection for Claude Code via Exa.ai.
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Installation](#installation)
+- [Usage](#usage)
+- [What's Included](#whats-included)
+- [Documentation](#documentation)
+- [Example Workflows](#example-workflows)
+- [Verification](#verification)
+- [Contributing](#contributing)
+- [License](#license)
+- [Credits](#credits)
 
 ## Overview
 
@@ -12,31 +25,29 @@ Three specialized skills that help Claude use [Exa.ai](https://exa.ai) via the [
 
 ## Installation
 
-### Prerequisites
+Install from the Claude Code plugin marketplace:
 
-1. Install the exa-ai Ruby gem:
+```
+/plugin marketplace add benjaminjackson/exa-skills
+/plugin install exa-core@exa-skills
+```
+
+Or browse and install via the `/plugin` menu.
+
+**Prerequisites:**
+
+1. **Exa API key** (get one from [dashboard.exa.ai](https://dashboard.exa.ai) - note: Exa has usage-based pricing)
+2. **exa-ai Ruby gem**:
    ```bash
    gem install exa-ai
    ```
 
-   Or add to your Gemfile:
-   ```ruby
-   gem 'exa-ai'
-   ```
-
-2. Set your API key (get one from [dashboard.exa.ai](https://dashboard.exa.ai)):
+3. **Set your API key**:
    ```bash
    export EXA_API_KEY="your-api-key-here"
    ```
 
-### Install Plugin
-
-```bash
-# Clone this repository to ~/github/exa-skills
-git clone https://github.com/benjaminjackson/exa-skills.git ~/github/exa-skills
-
-# Claude Code will auto-discover it - no other steps needed!
-```
+The plugin provides all three skills (exa-core, exa-research, exa-websets) in one install.
 
 ## Usage
 
@@ -85,14 +96,6 @@ Browse the documentation:
 - [exa-research/](./exa-research/) - 3 async research commands
 - [exa-websets/](./exa-websets/) - 28 commands for data collection
 
-### Documentation Structure
-
-The skills use a token-optimized structure:
-- SKILL.md provides essential information and examples
-- Each command has its own detailed documentation file
-- Claude progressively loads command docs only when needed
-- Result: 30% reduction in tokens on skill invocation
-
 ## Example Workflows
 
 ### Search and Extract
@@ -117,26 +120,38 @@ Claude: [Uses exa-research with structured output]
 
 To verify installation:
 
-1. Check the plugin directory exists:
-   ```bash
-   ls ~/github/exa-skills/.claude-plugin/marketplace.json
+1. Check the skills are available:
    ```
+   /plugin
+   ```
+   You should see exa-core, exa-research, and exa-websets listed.
 
 2. Verify the Ruby gem is installed:
    ```bash
    gem list exa-ai
    ```
 
-3. In Claude Code, try:
+3. Test with Claude Code:
    ```
-   Use exa to search for "test query"
+   Use exa to search for "TypeScript async/await patterns"
    ```
 
-Claude should automatically use the skills with best practices.
+Claude should automatically activate the skills with best practices.
 
 ## Contributing
 
 Contributions welcome! See individual skill directories for documentation structure.
+
+**Development Setup:**
+
+```bash
+# Clone the repository
+git clone https://github.com/benjaminjackson/exa-skills.git ~/github/exa-skills
+
+# Claude Code will auto-discover it for local development
+```
+
+**Contribution workflow:**
 
 1. Fork the repository
 2. Create a feature branch
