@@ -86,9 +86,3 @@ exa-ai find-similar "https://blog.anthropic.com/constitutional-ai" \
   --num-results 10
 ```
 
-## Complete Options
-
-For all available options, run:
-```bash
-exa-ai find-similar --help
-```

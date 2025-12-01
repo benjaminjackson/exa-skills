@@ -135,9 +135,3 @@ exa-ai get-contents "$urls" \
   }' | jq -r '.results[].summary | fromjson | "## \(.company)\nProduct: \(.product)\nFeatures:\n\(.key_features | map("- " + .) | join("\n"))\n"'
 ```
 
-## Complete Options
-
-For all available options, run:
-```bash
-exa-ai get-contents --help
-```

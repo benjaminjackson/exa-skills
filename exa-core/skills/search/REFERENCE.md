@@ -108,22 +108,5 @@ exa-ai search "best practices for REST APIs" \
   --num-results 3 | jq -r '.results[] | {title: .title, url: .url}'
 ```
 
-## Token Usage Comparison
+_Note: See SKILL.md for token optimization strategies and output format guidance._
 
-```bash
-# ❌ Full JSON (~1000 tokens for 5 results)
-exa-ai search "AI news" --num-results 5
-
-# ✅ toon format for direct reading (~600 tokens - 40% savings)
-exa-ai search "AI news" --num-results 5 --output-format toon
-
-# ✅✅ JSON + jq for field extraction (~100 tokens - 90% savings)
-exa-ai search "AI news" --num-results 5 | jq -r '.results[].title'
-```
-
-## Complete Options
-
-For all available options, run:
-```bash
-exa-ai search --help
-```

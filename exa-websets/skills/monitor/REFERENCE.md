@@ -239,23 +239,9 @@ exa-ai monitor-runs-list $monitor_id
 
 Common timezone values:
 - `America/New_York` (Eastern Time)
-- `America/Chicago` (Central Time)
-- `America/Denver` (Mountain Time)
 - `America/Los_Angeles` (Pacific Time)
-- `America/Phoenix` (Arizona)
 - `UTC` (Coordinated Universal Time)
 - `Europe/London`
-- `Europe/Paris`
-- `Asia/Tokyo`
-- `Australia/Sydney`
 
-## Complete Options
+_Use standard IANA timezone names. See tzdata for the full list._
 
-For all available options for each command, run:
-
-```bash
-exa-ai monitor-create --help
-exa-ai monitor-get --help
-exa-ai monitor-list --help
-exa-ai monitor-runs-list --help
-```

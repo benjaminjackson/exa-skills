@@ -20,6 +20,14 @@ Automate webset updates on a schedule using monitors.
 - **search**: Run search periodically to add/update items
 - **refresh**: Refresh existing items periodically
 
+## Output Formats
+
+All exa-ai monitor commands support output formats:
+- **JSON (default)**: Pipe to `jq` to extract specific fields (e.g., `| jq -r '.monitor_id'`)
+- **toon**: Compact, readable format for direct viewing
+- **pretty**: Human-friendly formatted output
+- **text**: Plain text output
+
 ## Quick Start
 
 ### Create Search Monitor

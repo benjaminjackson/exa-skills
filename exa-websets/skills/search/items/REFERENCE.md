@@ -106,12 +106,4 @@ for item_id in $items_to_delete; do
 done
 ```
 
-## Best Practices
-
-1. **Use appropriate output formats**:
-   - Use `pretty` or `text` for human readability
-   - Use `json` for scripting and automation with `jq`
-2. **Save item IDs for operations**: Extract and save IDs using `jq` for batch processing
-3. **Review before deleting**: Always check item details before deletion - deleted items cannot be recovered
-4. **Check item counts**: Verify expected number of items after searches or imports
-5. **Use jq for filtering**: Filter items by criteria before batch operations
+_Note: See main SKILL.md for best practices and output format guidance._

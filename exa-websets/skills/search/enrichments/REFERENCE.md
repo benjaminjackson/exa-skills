@@ -60,27 +60,6 @@ exa-ai enrichment-create ws_abc123 \
   --wait
 ```
 
-##### Options from File
-
-```bash
-cat > funding-stages.json <<'EOF'
-[
-  {"label": "Pre-seed"},
-  {"label": "Seed"},
-  {"label": "Series A"},
-  {"label": "Series B+"},
-  {"label": "Public"}
-]
-EOF
-
-exa-ai enrichment-create ws_abc123 \
-  --description "Funding stage" \
-  --format options \
-  --options @funding-stages.json \
-  --title "Funding" \
-  --wait
-```
-
 ##### With Instructions
 
 ```bash
@@ -251,86 +230,5 @@ exa-ai enrichment-list $webset_id
 exa-ai webset-item-list $webset_id
 ```
 
-## Complete Workflow: Create Webset with Enrichments
+_Note: See main SKILL.md for the complete three-step workflow, enrichment best practices, and credit costs._
 
-```bash
-# Step 1: VALIDATE - Create with count:1 (NO enrichments)
-webset_id=$(exa-ai webset-create \
-  --search '{"query":"AI startups","count":1}' \
-  --wait | jq -r '.webset_id')
-
-# Review result
-exa-ai webset-item-list $webset_id
-```
-
-**⚠️ REQUIRED: Verify result quality before continuing.**
-
-```bash
-# Step 2: EXPAND - Gradually increase count
-exa-ai webset-search-create $webset_id \
-  --query "AI startups" \
-  --mode append \
-  --count 2 \
-  --wait
-
-# Check quality
-exa-ai webset-item-list $webset_id
-```
-
-**⚠️ REQUIRED: Repeat expansion (5, 10, 25, 50) until target size reached.**
-
-```bash
-# Step 3: ENRICH - Add enrichments after validation
-exa-ai enrichment-create $webset_id \
-  --description "Company website" --format url --title "Website" --wait
-
-exa-ai enrichment-create $webset_id \
-  --description "Funding stage" --format options \
-  --options '[{"label":"Seed"},{"label":"Series A"},{"label":"Series B+"}]' \
-  --title "Stage" --wait
-
-exa-ai enrichment-create $webset_id \
-  --description "Number of employees" --format text --title "Team Size" --wait
-
-# View enriched results
-exa-ai webset-item-list $webset_id
-```
-
-## Enrichment Best Practices
-
-1. **Enrich after validation and expansion**: Never add enrichments during initial validation with count:1. Follow the three-step workflow.
-2. **Use descriptive descriptions**: Clear descriptions help AI extract accurately. "Company website URL" is better than "website".
-3. **Choose appropriate formats**:
-   - Use `url` for links
-   - Use `options` for categorical data with predefined choices
-   - Use `text` for free-form data
-4. **Add instructions for precision**: Provide additional context when extraction needs guidance
-5. **Limit options to 10 or fewer**: Too many options reduce accuracy for categorical enrichments
-6. **Use --wait for large websets**: See progress and catch errors early
-7. **Review enriched results**: Check a sample before relying on extracted data
-
-## Credit Costs
-
-**Pricing**: $50/month = 8,000 credits ($0.00625 per credit)
-
-**Enrichment costs**:
-- Standard enrichment (text, url, options): 2 credits ($0.0125)
-- Email enrichment: 5 credits ($0.03125)
-
-**Examples**:
-- 100 items + 2 enrichments = 400 credits ($2.50)
-- 100 items + 5 enrichments = 1,000 credits ($6.25)
-- 1,000 items + 3 enrichments = 6,000 credits ($37.50)
-
-## Complete Options
-
-For all available options for each command, run:
-
-```bash
-exa-ai enrichment-create --help
-exa-ai enrichment-get --help
-exa-ai enrichment-list --help
-exa-ai enrichment-update --help
-exa-ai enrichment-delete --help
-exa-ai enrichment-cancel --help
-```

@@ -221,12 +221,6 @@ echo "$result" | jq -r '.result.languages[]'
 }
 ```
 
-### Complete Options
-
-For all available options, run:
-```bash
-exa-ai research-start --help
-```
 
 ---
 
@@ -352,13 +346,6 @@ exa-ai research-get research_abc123 --output-format toon
 
 # ✅✅ JSON + jq to extract only result (90% savings)
 exa-ai research-get research_abc123 | jq -r '.result'
-```
-
-### Complete Options
-
-For all available options, run:
-```bash
-exa-ai research-get --help
 ```
 
 ---
@@ -490,9 +477,3 @@ exa-ai research-list --output-format toon
 exa-ai research-list | jq -r '.tasks[].research_id'
 ```
 
-### Complete Options
-
-For all available options, run:
-```bash
-exa-ai research-list --help
-```

@@ -68,19 +68,5 @@ exa-ai context "PostgreSQL query optimization indexes" --tokens-num 4000
 exa-ai context "RESTful API design principles" --tokens-num 5000 --output-format toon
 ```
 
-## Token Optimization
+_Note: See SKILL.md for token optimization strategies._
 
-```bash
-# Use toon format for 40% fewer tokens
-exa-ai context "Redis caching strategies" --tokens-num 3000 --output-format toon
-
-# Extract only the context field
-exa-ai context "Kubernetes deployment strategies" --tokens-num 4000 | jq -r '.context'
-```
-
-## Complete Options
-
-For all available options, run:
-```bash
-exa-ai context --help
-```

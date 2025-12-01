@@ -112,44 +112,24 @@ DataCo,https://dataco.com,Austin
 ## Example Workflow
 
 ```bash
-# 1. Prepare CSV file
-cat > companies.csv <<'EOF'
-name,website,industry
-Acme Corp,https://acme.com,SaaS
-TechStart,https://techstart.io,AI
-DataCo,https://dataco.com,Analytics
-EOF
-
-# 2. Create import
+# Create import from CSV file (prepare your CSV file first)
 import_id=$(exa-ai import-create companies.csv \
-  --count 3 \
+  --count 100 \
   --title "Portfolio Companies" \
   --format csv \
   --entity-type company | jq -r '.import_id')
 
-# 3. Check import status
-exa-ai import-get $import_id
-
-# 4. Create webset from import
+# Create webset from import
 webset_id=$(exa-ai webset-create --import $import_id --wait | jq -r '.webset_id')
 
-# 5. Add enrichments to the webset
+# Add enrichments
 exa-ai enrichment-create $webset_id \
   --description "Employee count" \
   --format text \
   --title "Team Size" \
   --wait
 
-# 6. View items
+# View items
 exa-ai webset-item-list $webset_id
 ```
 
-## Complete Options
-
-For all available options for each command, run:
-
-```bash
-exa-ai import-create --help
-exa-ai import-list --help
-exa-ai import-get --help
-```

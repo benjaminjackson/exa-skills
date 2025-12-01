@@ -142,63 +142,27 @@ exa-ai webset-search-create ws_abc123 \
   --query "ML engineers at FAANG companies"
 ```
 
-## Example Workflow
+## Example Workflows
 
-### Scaling Up After Test Search
+_Note: Always start with count:1 to validate, then scale up with the identical query. See main SKILL.md for the complete three-step workflow._
+
+### Append Search Results
 
 ```bash
-# 1. Create webset with minimal count to validate
-webset_id=$(exa-ai webset-create \
-  --search '{"query":"AI startups founded in 2024","count":1}' \
-  --wait | jq -r '.webset_id')
-
-# 2. Validate the result is good, then append more with SAME query
-exa-ai webset-search-create $webset_id \
+exa-ai webset-search-create ws_abc123 \
   --query "AI startups founded in 2024" \
   --mode append \
-  --count 2 \
-  --wait
-```
-
-### Adding Different Search to Same Webset
-
-```bash
-# After completing the first search, you can add a DIFFERENT search
-# This is different from scaling up - you're adding a new category of items
-
-# 1. Test the new search with count:1
-exa-ai webset-search-create $webset_id \
-  --query "biotech startups" \
-  --mode append \
   --count 1 \
-  --wait
-
-# 2. If results are good, scale up with SAME query
-exa-ai webset-search-create $webset_id \
-  --query "biotech startups" \
-  --mode append \
-  --count 24 \
   --wait
 ```
 
 ### Override Entire Collection
 
 ```bash
-# Replace everything in the webset with new search results
-# Always test with count:1 first, even for override
-
-# 1. Test with count:1
-exa-ai webset-search-create $webset_id \
+exa-ai webset-search-create ws_abc123 \
   --query "top tech companies 2024" \
   --mode override \
   --count 1 \
-  --wait
-
-# 2. Validate, then override with SAME query at scale
-exa-ai webset-search-create $webset_id \
-  --query "top tech companies 2024" \
-  --mode override \
-  --count 100 \
   --wait
 ```
 

@@ -34,6 +34,14 @@ Comprehensive webset management including creation, search, imports, items, and 
 
 `exa-ai --help`
 
+## Output Formats
+
+All exa-ai webset commands support output formats:
+- **JSON (default)**: Pipe to `jq` to extract specific fields (e.g., `| jq -r '.webset_id'`)
+- **toon**: Compact, readable format for direct viewing
+- **pretty**: Human-friendly formatted output
+- **text**: Plain text output
+
 # Webset Management
 
 Core operations for managing webset collections.

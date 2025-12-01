@@ -90,49 +90,15 @@ exa-ai answer "What are the key features of GPT-4?" --text
 
 ## Schema Design Tips
 
-### Simple Fields
+Always use object wrapper with `properties`. Examples of common patterns:
+
 ```json
-{
-  "type": "object",
-  "properties": {
-    "answer": {"type": "string"},
-    "confidence": {"type": "string"}
-  }
-}
+// Simple fields
+{"type":"object","properties":{"answer":{"type":"string"}}}
+
+// Arrays
+{"type":"object","properties":{"items":{"type":"array","items":{"type":"string"}}}}
 ```
 
-### Arrays
-```json
-{
-  "type": "object",
-  "properties": {
-    "items": {
-      "type": "array",
-      "items": {"type": "string"}
-    }
-  }
-}
-```
+_See earlier examples for complex nested schemas._
 
-### Nested Objects
-```json
-{
-  "type": "object",
-  "properties": {
-    "details": {
-      "type": "object",
-      "properties": {
-        "name": {"type": "string"},
-        "value": {"type": "string"}
-      }
-    }
-  }
-}
-```
-
-## Complete Options
-
-For all available options, run:
-```bash
-exa-ai answer --help
-```
