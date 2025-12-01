@@ -16,22 +16,6 @@ Create a new enrichment for a webset.
 exa-ai enrichment-create WEBSET_ID --description TEXT --format TYPE [OPTIONS]
 ```
 
-#### Required
-
-- `WEBSET_ID`: Webset ID
-- `--description TEXT`: What to extract
-- `--format TYPE`: `text`, `url`, or `options`
-
-#### Common Options
-
-- `--title TEXT`: Display title
-- `--options JSON`: Array of {"label":"..."} (required if format=options, supports @file.json)
-- `--instructions TEXT`: Additional instructions
-- `--metadata JSON`: Custom metadata (supports @file.json)
-- `--wait`: Wait for enrichment to complete
-- `--api-key KEY`: Exa API key (or set EXA_API_KEY env var)
-- `--output-format FMT`: `json`, `pretty`, or `text`
-
 #### Enrichment Formats
 
 - **text**: Free-form text extraction
@@ -129,16 +113,6 @@ Get details about a specific enrichment.
 exa-ai enrichment-get WEBSET_ID ENRICHMENT_ID [OPTIONS]
 ```
 
-#### Required
-
-- `WEBSET_ID`: Webset ID
-- `ENRICHMENT_ID`: Enrichment ID
-
-#### Options
-
-- `--api-key KEY`: Exa API key (or set EXA_API_KEY env var)
-- `--output-format FMT`: `json`, `pretty`, or `text`
-
 #### Examples
 
 ```bash
@@ -159,15 +133,6 @@ List all enrichments for a webset.
 exa-ai enrichment-list WEBSET_ID [OPTIONS]
 ```
 
-#### Required
-
-- `WEBSET_ID`: Webset ID
-
-#### Options
-
-- `--api-key KEY`: Exa API key (or set EXA_API_KEY env var)
-- `--output-format FMT`: `json`, `pretty`, or `text`
-
 #### Examples
 
 ```bash
@@ -187,20 +152,6 @@ Update an enrichment configuration.
 ```bash
 exa-ai enrichment-update WEBSET_ID ENRICHMENT_ID [OPTIONS]
 ```
-
-#### Required
-
-- `WEBSET_ID`: Webset ID
-- `ENRICHMENT_ID`: Enrichment ID
-
-#### Options
-
-- `--description TEXT`: Update extraction description
-- `--format TYPE`: Update format (`text`, `url`, or `options`)
-- `--options JSON`: Update options (for options format, supports @file.json)
-- `--metadata JSON`: Update custom metadata (supports @file.json)
-- `--api-key KEY`: Exa API key (or set EXA_API_KEY env var)
-- `--output-format FMT`: `json`, `pretty`, or `text`
 
 #### Examples
 
@@ -231,17 +182,6 @@ Delete an enrichment from a webset.
 exa-ai enrichment-delete WEBSET_ID ENRICHMENT_ID [OPTIONS]
 ```
 
-#### Required
-
-- `WEBSET_ID`: Webset ID
-- `ENRICHMENT_ID`: Enrichment ID
-
-#### Options
-
-- `--force`: Skip confirmation prompt
-- `--api-key KEY`: Exa API key (or set EXA_API_KEY env var)
-- `--output-format FMT`: `json`, `pretty`, or `text`
-
 #### Examples
 
 ```bash
@@ -261,16 +201,6 @@ Cancel a running enrichment.
 ```bash
 exa-ai enrichment-cancel WEBSET_ID ENRICHMENT_ID [OPTIONS]
 ```
-
-#### Required
-
-- `WEBSET_ID`: Webset ID
-- `ENRICHMENT_ID`: Enrichment ID
-
-#### Options
-
-- `--api-key KEY`: Exa API key (or set EXA_API_KEY env var)
-- `--output-format FMT`: `json`, `pretty`, or `text`
 
 #### Examples
 

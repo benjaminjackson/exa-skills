@@ -14,19 +14,6 @@ Create a new import from a CSV file.
 exa-ai import-create FILE --count N --title TEXT --format csv --entity-type TYPE [OPTIONS]
 ```
 
-#### Required
-
-- `FILE`: Path to CSV file
-- `--count N`: Number of rows to import
-- `--title TEXT`: Title for the import
-- `--format csv`: File format (currently only CSV supported)
-- `--entity-type TYPE`: Entity type (company, person, article, research_paper, custom)
-
-#### Options
-
-- `--entity-description TEXT`: Custom description (required if entity-type=custom)
-- `--output-format FMT`: `json`, `pretty`, `text`, or `toon`
-
 #### Examples
 
 ##### Basic CSV Import
@@ -76,10 +63,6 @@ List all imports in your account.
 exa-ai import-list [OPTIONS]
 ```
 
-#### Options
-
-- `--output-format FMT`: `json`, `pretty`, `text`, or `toon`
-
 #### Examples
 
 ```bash
@@ -99,14 +82,6 @@ Get details about a specific import.
 ```bash
 exa-ai import-get IMPORT_ID [OPTIONS]
 ```
-
-#### Required
-
-- `IMPORT_ID`: Import ID
-
-#### Options
-
-- `--output-format FMT`: `json`, `pretty`, `text`, or `toon`
 
 #### Examples
 

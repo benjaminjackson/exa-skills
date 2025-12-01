@@ -14,20 +14,6 @@ Create a new webset from search criteria or an import.
 exa-ai webset-create (--search JSON | --import ID) [OPTIONS]
 ```
 
-#### Required (choose one)
-
-- `--search JSON`: Search configuration (supports @file.json)
-- `--import ID`: Import or webset ID to create webset from
-
-#### Common Options
-
-- `--enrichments JSON`: Array of enrichment configs (supports @file.json)
-- `--exclude JSON`: Array of exclude configs (supports @file.json)
-- `--external-id ID`: External identifier for the webset
-- `--metadata JSON`: Custom metadata (supports @file.json)
-- `--wait`: Wait for webset to reach idle status
-- `--output-format FMT`: `json`, `pretty`, `text`, or `toon`
-
 #### Examples
 
 ##### From Search (Most Common)
@@ -230,14 +216,6 @@ Get details about a specific webset.
 exa-ai webset-get WEBSET_ID [OPTIONS]
 ```
 
-#### Required
-
-- `WEBSET_ID`: Webset ID
-
-#### Options
-
-- `--output-format FMT`: `json`, `pretty`, `text`, or `toon`
-
 #### Examples
 
 ```bash
@@ -257,10 +235,6 @@ List all websets in your account.
 ```bash
 exa-ai webset-list [OPTIONS]
 ```
-
-#### Options
-
-- `--output-format FMT`: `json`, `pretty`, `text`, or `toon`
 
 #### Examples
 
@@ -285,16 +259,6 @@ Update webset configuration.
 exa-ai webset-update WEBSET_ID [OPTIONS]
 ```
 
-#### Required
-
-- `WEBSET_ID`: Webset ID
-
-#### Options
-
-- `--metadata JSON`: Update custom metadata
-- `--external-id ID`: Update external identifier
-- `--output-format FMT`: `json`, `pretty`, `text`, or `toon`
-
 #### Examples
 
 ```bash
@@ -315,14 +279,6 @@ Delete a webset permanently.
 ```bash
 exa-ai webset-delete WEBSET_ID [OPTIONS]
 ```
-
-#### Required
-
-- `WEBSET_ID`: Webset ID
-
-#### Options
-
-- `--output-format FMT`: `json`, `pretty`, `text`, or `toon`
 
 #### Examples
 

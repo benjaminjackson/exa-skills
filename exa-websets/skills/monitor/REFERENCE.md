@@ -14,23 +14,6 @@ Create a new monitor to automate webset updates on a schedule.
 exa-ai monitor-create WEBSET_ID --cron EXPR --timezone TZ --behavior-type TYPE [OPTIONS]
 ```
 
-#### Required
-
-- `WEBSET_ID`: Webset ID
-- `--cron EXPR`: Cron expression (e.g., "0 0 * * *")
-- `--timezone TZ`: Timezone (e.g., "America/New_York")
-- `--behavior-type TYPE`: `search` or `refresh`
-
-#### For Search Behavior
-
-- `--query TEXT`: Search query (required for search)
-- `--count N`: Number of results (optional)
-- `--behavior-mode MODE`: `override` or `append` (default: append)
-
-#### Options
-
-- `--output-format FMT`: `json`, `pretty`, `text`, or `toon`
-
 #### Monitor Behavior Types
 
 - **search**: Run search periodically to add/update items
@@ -109,14 +92,6 @@ Get details about a specific monitor.
 exa-ai monitor-get MONITOR_ID [OPTIONS]
 ```
 
-#### Required
-
-- `MONITOR_ID`: Monitor ID
-
-#### Options
-
-- `--output-format FMT`: `json`, `pretty`, `text`, or `toon`
-
 #### Examples
 
 ```bash
@@ -137,10 +112,6 @@ List all monitors in your account.
 exa-ai monitor-list [OPTIONS]
 ```
 
-#### Options
-
-- `--output-format FMT`: `json`, `pretty`, `text`, or `toon`
-
 #### Examples
 
 ```bash
@@ -160,14 +131,6 @@ List execution history for a monitor.
 ```bash
 exa-ai monitor-runs-list MONITOR_ID [OPTIONS]
 ```
-
-#### Required
-
-- `MONITOR_ID`: Monitor ID
-
-#### Options
-
-- `--output-format FMT`: `json`, `pretty`, `text`, or `toon`
 
 #### Examples
 

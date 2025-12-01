@@ -14,14 +14,6 @@ List all items in a webset.
 exa-ai webset-item-list WEBSET_ID [OPTIONS]
 ```
 
-#### Required
-
-- `WEBSET_ID`: Webset ID
-
-#### Options
-
-- `--output-format FMT`: `json`, `pretty`, `text`, or `toon`
-
 #### Examples
 
 ```bash
@@ -42,22 +34,11 @@ Get details about a specific item.
 exa-ai webset-item-get ITEM_ID [OPTIONS]
 ```
 
-#### Required
-
-- `ITEM_ID`: Item ID
-
-#### Options
-
-- `--output-format FMT`: `json`, `pretty`, `text`, or `toon`
-
 #### Examples
 
 ```bash
 # Get item details
 exa-ai webset-item-get item_xyz789
-
-# Get in JSON format
-exa-ai webset-item-get item_xyz789 --output-format json
 ```
 
 ### webset-item-delete
@@ -68,43 +49,6 @@ Remove an item from a webset.
 
 ```bash
 exa-ai webset-item-delete ITEM_ID [OPTIONS]
-```
-
-#### Required
-
-- `ITEM_ID`: Item ID
-
-#### Options
-
-- `--output-format FMT`: `json`, `pretty`, `text`, or `toon`
-
-#### Examples
-
-```bash
-# Delete item
-exa-ai webset-item-delete item_xyz789
-
-# Delete and view response
-exa-ai webset-item-delete item_xyz789 --output-format json
-```
-
-## Complete Example: Item Management Workflow
-
-```bash
-# 1. Create webset
-webset_id=$(exa-ai webset-create \
-  --search '{"query":"AI startups","count":50}' \
-  --wait | jq -r '.webset_id')
-
-# 2. List all items
-exa-ai webset-item-list $webset_id --output-format pretty
-
-# 3. Get first item details
-item_id=$(exa-ai webset-item-list $webset_id --output-format json | jq -r '.items[0].id')
-exa-ai webset-item-get $item_id
-
-# 4. Delete unwanted item
-exa-ai webset-item-delete $item_id
 ```
 
 ## Common Workflows
@@ -171,13 +115,3 @@ done
 3. **Review before deleting**: Always check item details before deletion - deleted items cannot be recovered
 4. **Check item counts**: Verify expected number of items after searches or imports
 5. **Use jq for filtering**: Filter items by criteria before batch operations
-
-## Complete Options
-
-For all available options for each command, run:
-
-```bash
-exa-ai webset-item-list --help
-exa-ai webset-item-get --help
-exa-ai webset-item-delete --help
-```
