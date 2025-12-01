@@ -21,6 +21,40 @@ Run searches within a webset to add new items based on search criteria.
 - **append**: Add new items to existing collection (default)
 - **override**: Replace entire collection with search results
 
+## ⚠️ Critical: Query Consistency When Appending
+
+**When appending results after a test search, you MUST use the exact same query and explicit criteria.**
+
+```bash
+# ✅ CORRECT: Test with count:1, then append more with SAME query
+exa-ai webset-search-create ws_abc123 \
+  --query "AI startups in San Francisco founded:2024" \
+  --count 1 \
+  --wait
+
+# After validating results are good, append more with IDENTICAL query
+exa-ai webset-search-create ws_abc123 \
+  --query "AI startups in San Francisco founded:2024" \
+  --mode append \
+  --count 50
+
+# ❌ WRONG: Different query when appending
+exa-ai webset-search-create ws_abc123 \
+  --query "AI startups in San Francisco founded:2024" \
+  --count 1
+
+# DON'T DO THIS - different query will return different results
+exa-ai webset-search-create ws_abc123 \
+  --query "AI startups San Francisco" \  # Missing founded:2024
+  --mode append \
+  --count 50
+```
+
+**Why this matters:**
+- Changing the query or criteria means you're no longer scaling up the same search
+- Your test search validated one set of results; changing the query invalidates that validation
+- You'll end up with inconsistent items in your webset
+
 ## Quick Start
 
 ### Basic Search
@@ -115,21 +149,44 @@ exa-ai webset-search-create ws_abc123 \
 
 ## Complete Workflow
 
+### Scaling Up After Test Search
+
 ```bash
 # 1. Create webset with minimal count to validate
 webset_id=$(exa-ai webset-create \
-  --search '{"query":"AI startups","count":1}' \
+  --search '{"query":"AI startups founded:2024","count":1}' \
   --wait | jq -r '.webset_id')
 
-# 2. Add more items with search (test with count:1 first)
+# 2. Validate the result is good, then append more with SAME query
+exa-ai webset-search-create $webset_id \
+  --query "AI startups founded:2024" \
+  --mode append \
+  --count 49 \
+  --wait
+
+# 3. Check results (should have 50 total)
+exa-ai webset-item-list $webset_id
+```
+
+### Adding Different Search to Same Webset
+
+```bash
+# After completing the first search, you can add a DIFFERENT search
+# This is different from scaling up - you're adding a new category of items
+
+# 1. Test the new search with count:1
 exa-ai webset-search-create $webset_id \
   --query "biotech startups" \
   --mode append \
   --count 1 \
   --wait
 
-# 3. Check results
-exa-ai webset-item-list $webset_id
+# 2. If results are good, scale up with SAME query
+exa-ai webset-search-create $webset_id \
+  --query "biotech startups" \
+  --mode append \
+  --count 49 \
+  --wait
 ```
 
 ## Detailed Reference
