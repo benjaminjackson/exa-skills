@@ -39,7 +39,7 @@ exa-ai monitor-create ws_abc123 \
   --timezone "America/New_York" \
   --behavior-type search \
   --query "new AI startups" \
-  --count 50
+  --count 5
 ```
 
 ##### Weekly Search with Append
@@ -190,7 +190,7 @@ exa-ai monitor-create ws_abc123 \
   --behavior-type search \
   --query "new funding rounds" \
   --behavior-mode append \
-  --count 50
+  --count 5
 ```
 
 ## Example Workflow

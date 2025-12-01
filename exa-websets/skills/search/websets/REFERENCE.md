@@ -39,25 +39,6 @@ import_id=$(exa-ai import-create companies.csv \
 exa-ai webset-create --import $import_id --wait
 ```
 
-##### From Existing Webset
-
-```bash
-# Clone an existing webset
-exa-ai webset-create --import webset_xyz789 --wait
-```
-
-_Note: For adding enrichments, follow the three-step validation workflow (Validate → Expand → Enrich) documented in SKILL.md. Never add enrichments during initial validation._
-
-##### With Metadata
-
-```bash
-# Add metadata while keeping count minimal for initial validation
-exa-ai webset-create \
-  --search '{"query":"competitors","count":1}' \
-  --metadata '{"project":"market-research","created_by":"team"}' \
-  --wait
-```
-
 ##### Save Webset ID
 
 ```bash
@@ -80,13 +61,26 @@ The `--search` JSON supports these fields:
 - `criteria`: Array of detailed search criteria objects
   - `description`: Specific requirement or filter to apply
 
-##### Basic Search
+##### Entities
 
 ```json
 {
   "query": "AI safety research papers 2024",
   "count": 1,
-  "category": "research paper"
+  "entity": {
+    "type": "research_paper"
+  }
+}
+```
+
+```json
+{
+  "query": "economic justice nonprofits in new york",
+  "count": 1,
+  "entity": {
+    "type": "custom",
+    "description": "nonprofit"
+  }
 }
 ```
 
@@ -96,7 +90,7 @@ Use the `criteria` array to specify detailed requirements for more precise resul
 
 ```json
 {
-  "query": "Technology companies focused on developer tools",
+  "query": "Technology companies with 50-500 employees focused on developer tools",
   "count": 1,
   "entity": {
     "type": "company"
@@ -117,49 +111,6 @@ Each criterion provides additional context that helps refine search results. Use
 - Core focus areas or mission alignment
 - Organizational characteristics (structure, programs, presence)
 - Geographic or temporal constraints
-
-### webset-get
-
-Get details about a specific webset.
-
-#### Syntax
-
-```bash
-exa-ai webset-get WEBSET_ID [OPTIONS]
-```
-
-#### Examples
-
-```bash
-# Get webset details
-exa-ai webset-get ws_abc123
-
-# Get in JSON format
-exa-ai webset-get ws_abc123 --output-format json
-```
-
-### webset-list
-
-List all websets in your account.
-
-#### Syntax
-
-```bash
-exa-ai webset-list [OPTIONS]
-```
-
-#### Examples
-
-```bash
-# List all websets
-exa-ai webset-list
-
-# List in JSON format
-exa-ai webset-list --output-format json
-
-# Save first webset ID
-webset_id=$(exa-ai webset-list --output-format json | jq -r '.websets[0].id')
-```
 
 ### webset-update
 
@@ -238,27 +189,3 @@ exa-ai webset-create \
   --search '{"query":"ML researchers","count":1,"category":"person"}' \
   --wait
 ```
-
-_Note: See main SKILL.md for credit costs, pricing, and best practices._
-
-## Cloning and Templating
-
-_Follow the three-step workflow (Validate → Expand → Enrich) from SKILL.md when creating templates._
-
-```bash
-# Create and configure a template webset
-template_id=$(exa-ai webset-create \
-  --search '{"query":"tech companies","count":1}' \
-  --wait | jq -r '.webset_id')
-
-# Clone the template for a new use case
-new_webset_id=$(exa-ai webset-create --import $template_id --wait | jq -r '.webset_id')
-
-# Update the clone with a new search
-exa-ai webset-search-create $new_webset_id \
-  --query "AI startups 2024" \
-  --mode override \
-  --count 1 \
-  --wait
-```
-

@@ -105,5 +105,3 @@ for item_id in $items_to_delete; do
   exa-ai webset-item-delete $item_id --force
 done
 ```
-
-_Note: See main SKILL.md for best practices and output format guidance._

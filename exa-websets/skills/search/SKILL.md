@@ -199,7 +199,7 @@ exa-ai webset-search-create ws_abc123 \
 exa-ai webset-search-create ws_abc123 \
   --query "AI startups SF founded:2024" \
   --mode append \
-  --count 50
+  --count 5
 ```
 
 ## Basic Search Operations
@@ -266,7 +266,7 @@ webset_id=$(exa-ai webset-create --import $import_id --wait | jq -r '.webset_id'
 
 ```bash
 exa-ai import-create products.csv \
-  --count 50 \
+  --count 5 \
   --title "Product List" \
   --format csv \
   --entity-type custom \

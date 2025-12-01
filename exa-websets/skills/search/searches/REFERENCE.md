@@ -34,7 +34,7 @@ exa-ai webset-search-create ws_abc123 \
 exa-ai webset-search-create ws_abc123 \
   --query "AI startups in San Francisco founded in 2024" \
   --mode append \
-  --count 50
+  --count 5
 
 # ❌ WRONG: Different query when appending
 exa-ai webset-search-create ws_abc123 \
@@ -45,7 +45,7 @@ exa-ai webset-search-create ws_abc123 \
 exa-ai webset-search-create ws_abc123 \
   --query "AI startups San Francisco" \  # Missing founded in 2024
   --mode append \
-  --count 50
+  --count 5
 ```
 
 **Why this matters:**
@@ -60,7 +60,7 @@ exa-ai webset-search-create ws_abc123 \
 ```bash
 exa-ai webset-search-create ws_abc123 \
   --query "AI startups in San Francisco" \
-  --count 50
+  --count 5
 ```
 
 ##### Append to Existing Items
@@ -69,7 +69,7 @@ exa-ai webset-search-create ws_abc123 \
 exa-ai webset-search-create ws_abc123 \
   --query "SaaS companies Series B" \
   --mode append \
-  --count 25
+  --count 5
 ```
 
 ##### Save Search ID
@@ -77,17 +77,7 @@ exa-ai webset-search-create ws_abc123 \
 ```bash
 search_id=$(exa-ai webset-search-create ws_abc123 \
   --query "AI research papers" \
-  --count 50 | jq -r '.search_id')
-```
-
-### webset-search-get
-
-Get details and results from a search.
-
-#### Syntax
-
-```bash
-exa-ai webset-search-get SEARCH_ID [OPTIONS]
+  --count 5 | jq -r '.search_id')
 ```
 
 ### webset-search-cancel
@@ -98,48 +88,6 @@ Cancel a running search.
 
 ```bash
 exa-ai webset-search-cancel SEARCH_ID [OPTIONS]
-```
-
-## Search Query Best Practices
-
-### Use Specific Queries
-
-```bash
-# Good - specific and targeted
-exa-ai webset-search-create ws_abc123 \
-  --query "YC W24 batch startups"
-
-# Less effective - too broad
-exa-ai webset-search-create ws_abc123 \
-  --query "startups"
-```
-
-### Time-Based Queries
-
-```bash
-# Recent content
-exa-ai webset-search-create ws_abc123 \
-  --query "AI research papers published in 2024" 
-
-# Last month
-exa-ai webset-search-create ws_abc123 \
-  --query "tech news published in the last-month" 
-```
-
-### Category-Specific Queries
-
-```bash
-# Companies
-exa-ai webset-search-create ws_abc123 \
-  --query "B2B SaaS companies with revenue at least $10M+" 
-
-# Research papers
-exa-ai webset-search-create ws_abc123 \
-  --query "machine learning papers arxiv"
-
-# People
-exa-ai webset-search-create ws_abc123 \
-  --query "ML engineers at FAANG companies"
 ```
 
 ## Example Workflows
@@ -164,19 +112,4 @@ exa-ai webset-search-create ws_abc123 \
   --mode override \
   --count 1 \
   --wait
-```
-
-## Monitoring Search Progress
-
-```bash
-# Start search
-search_id=$(exa-ai webset-search-create ws_abc123 \
-  --query "fintech startups" \
-  --count 100 | jq -r '.search_id')
-
-# Check status
-exa-ai webset-search-get $search_id
-
-# If needed, cancel
-exa-ai webset-search-cancel $search_id
 ```

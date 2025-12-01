@@ -39,7 +39,7 @@ exa-ai monitor-create ws_abc123 \
   --timezone "America/New_York" \
   --behavior-type search \
   --query "new AI startups" \
-  --count 50
+  --count 5
 ```
 
 ### Create Refresh Monitor
