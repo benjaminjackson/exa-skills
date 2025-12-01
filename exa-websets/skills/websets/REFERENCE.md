@@ -119,21 +119,24 @@ exa-ai webset-item-list $webset_id
 
 ---
 
-**Step 2: EXPAND - Increase count only after validation**
+**Step 2: EXPAND - Gradually increase count with verification at each stage**
 
 ```bash
 # Use the webset_id from Step 1
+# Start very small - expand to 2 results first
 exa-ai webset-search-create $webset_id \
   --query "tech startups" \
   --mode override \
-  --count 100 \
+  --count 2 \
   --wait
 
-# Review the expanded results
+# Review the results at this scale
 exa-ai webset-item-list $webset_id
 ```
 
-**⚠️ REQUIRED: Check for false positives at scale before continuing. DO NOT proceed to Step 3 without verification.**
+**⚠️ REQUIRED: Check quality at this scale. If good, repeat this step with larger counts (5, 10, 25, 50, 100) until you reach your target. If you see false positives, stop and refine your query. DO NOT proceed to Step 3 until you're satisfied with quality at your final count.**
+
+**Loop this step:** Keep expanding gradually (2 → 5 → 10 → 25 → 50 → 100) with verification between each expansion until you reach your desired result set size.
 
 ---
 
@@ -351,21 +354,24 @@ exa-ai webset-item-list $webset_id
 
 ---
 
-**Step 2: EXPAND - Increase count only after validation**
+**Step 2: EXPAND - Gradually increase count with verification at each stage**
 
 ```bash
 # Use the webset_id from Step 1
+# Start small - expand to 5-10 results first
 exa-ai webset-search-create $webset_id \
   --query "AI startups Series A" \
   --mode override \
-  --count 100 \
+  --count 10 \
   --wait
 
-# Review the expanded results
+# Review the results at this scale
 exa-ai webset-item-list $webset_id
 ```
 
-**⚠️ REQUIRED: Check for false positives at scale before continuing. DO NOT proceed to Step 3 without verification.**
+**⚠️ REQUIRED: Check quality at this scale. If good, repeat this step with larger counts (25, 50, 100) until you reach your target. If you see false positives, stop and refine your query. DO NOT proceed to Step 3 until you're satisfied with quality at your final count.**
+
+**Loop this step:** Keep expanding gradually (10 → 25 → 50 → 100) with verification between each expansion until you reach your desired result set size.
 
 ---
 
@@ -462,21 +468,24 @@ exa-ai webset-item-list $template_id
 
 ---
 
-**Creating a Template - Step 2: EXPAND**
+**Creating a Template - Step 2: EXPAND - Gradually increase count**
 
 ```bash
 # Use the template_id from Step 1
+# Start very small - expand to 2 results first
 exa-ai webset-search-create $template_id \
   --query "tech companies" \
   --mode override \
-  --count 100 \
+  --count 2 \
   --wait
 
 # Review expanded results
 exa-ai webset-item-list $template_id
 ```
 
-**⚠️ REQUIRED: Check for false positives before continuing. DO NOT proceed without verification.**
+**⚠️ REQUIRED: Check quality at this scale. If good, repeat with larger counts (5, 10, 25, 50, 100) until you reach your target. DO NOT proceed without verification at your final count.**
+
+**Loop this step:** Keep expanding gradually (2 → 5 → 10 → 25 → 50 → 100) with verification between each expansion.
 
 ---
 
@@ -513,16 +522,24 @@ exa-ai webset-item-list $new_webset_id
 
 ---
 
-**Using the Template - Step 2: EXPAND if validated**
+**Using the Template - Step 2: EXPAND - Gradually increase count**
 
 ```bash
 # Use the new_webset_id from previous step
+# Start very small - expand to 2 results first
 exa-ai webset-search-create $new_webset_id \
   --query "AI startups 2024" \
   --mode override \
-  --count 100 \
+  --count 2 \
   --wait
+
+# Review the results
+exa-ai webset-item-list $new_webset_id
 ```
+
+**⚠️ REQUIRED: Check quality at this scale. If good, repeat with larger counts (5, 10, 25, 50, 100) until you reach your target.**
+
+**Loop this step:** Keep expanding gradually (2 → 5 → 10 → 25 → 50 → 100) with verification between each expansion.
 
 ## Complete Options
 
