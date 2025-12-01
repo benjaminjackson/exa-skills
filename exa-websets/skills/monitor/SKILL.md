@@ -1,6 +1,6 @@
 ---
 name: exa-websets:monitor
-description: Automate webset updates on a schedule using monitors. Use when setting up periodic searches to add new items or refresh existing items in a webset automatically.
+description: Use when setting up monitors - periodic searches to add new items or refresh existing items in a webset automatically.
 ---
 
 # Exa Websets Monitor
