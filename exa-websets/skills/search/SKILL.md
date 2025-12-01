@@ -1,5 +1,5 @@
 ---
-name: exa-websets:search
+name: search
 description: Use for creating websets, running searches, importing CSV data, managing items, and adding enrichments to extract structured data.
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: exa-websets:monitor
+name: monitor
 description: Use when setting up monitors - periodic searches to add new items or refresh existing items in a webset automatically.
 ---
 
