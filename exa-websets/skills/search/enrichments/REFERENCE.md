@@ -16,6 +16,17 @@ Create a new enrichment for a webset.
 exa-ai enrichment-create WEBSET_ID --description TEXT --format TYPE [OPTIONS]
 ```
 
+#### Key Parameters
+
+- **description** (required): The primary AI extraction prompt that tells the enrichment what to extract. This drives the extraction logic.
+- **format** (required): Output type - text, url, or options
+- **instructions** (optional, creation-only): Additional guidance on HOW to extract or format. Cannot be changed after creation - only available during enrichment-create.
+- **title** (optional): Display name for the enrichment field
+- **options** (required for options format): Array of categorical choices
+- **metadata** (optional): Custom metadata object
+
+**TIP**: Check all available parameters with `exa-ai enrichment-create --help`
+
 #### Enrichment Formats
 
 - **text**: Free-form text extraction
@@ -80,6 +91,82 @@ exa-ai enrichment-create ws_abc123 \
   --title "Valuation" \
   --metadata '{"source":"public filings","confidence":"high"}' \
   --wait
+```
+
+### enrichment-update
+
+Update an existing enrichment's properties.
+
+#### What Can Be Updated
+
+You can update:
+- **description**: The AI extraction prompt (what to extract)
+- **format**: The output type (text, url, options)
+- **options**: Available choices (for options format only)
+- **metadata**: Custom metadata object
+
+#### Creation-Only Parameters
+
+These parameters can ONLY be set during `enrichment-create` and CANNOT be updated:
+- **instructions**: Additional formatting/scope guidance
+- **title**: The enrichment field name
+
+**Why this matters**: If you need to change instructions, you must delete and recreate the enrichment.
+
+#### Understanding Description vs Instructions
+
+- **description**: The primary prompt that tells the AI what to extract. This is required and drives the extraction logic.
+- **instructions** (creation-only): Optional additional guidance on HOW to extract or format. Examples: "Focus on backend technologies only" or "Use ISO date format".
+
+**TIP**: Check available parameters with `exa-ai enrichment-update --help`
+
+#### Syntax
+
+```bash
+exa-ai enrichment-update WEBSET_ID ENRICHMENT_ID [OPTIONS]
+```
+
+#### Examples
+
+##### Update Extraction Prompt
+
+```bash
+exa-ai enrichment-update ws_abc123 enr_xyz789 \
+  --description "Exact employee count from most recent source"
+```
+
+##### Update Options for Categorical Data
+
+```bash
+exa-ai enrichment-update ws_abc123 enr_xyz789 \
+  --format options \
+  --options '[
+    {"label":"Pre-seed"},
+    {"label":"Seed"},
+    {"label":"Series A"},
+    {"label":"Series B+"}
+  ]'
+```
+
+##### Update Metadata
+
+```bash
+exa-ai enrichment-update ws_abc123 enr_xyz789 \
+  --metadata '{"updated":"2024-01-15","source":"manual review"}'
+```
+
+##### Update Description and Format Together
+
+```bash
+exa-ai enrichment-update ws_abc123 enr_xyz789 \
+  --description "Company size category" \
+  --format options \
+  --options '[
+    {"label":"1-10"},
+    {"label":"11-50"},
+    {"label":"51-200"},
+    {"label":"201+"}
+  ]'
 ```
 
 ### enrichment-delete

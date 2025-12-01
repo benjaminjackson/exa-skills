@@ -363,6 +363,12 @@ Add structured data fields to all items in a webset using AI extraction.
 - **url**: Extract URLs only (website, LinkedIn, GitHub)
 - **options**: Categorical data with predefined options (industry, funding stage, size range)
 
+## Key Concepts
+
+- **description**: The primary AI prompt that drives extraction. This tells the enrichment WHAT to extract. (Can be updated)
+- **instructions**: Optional additional guidance on HOW to extract or format. (Creation-only, cannot be updated)
+- Use `exa-ai enrichment-create --help` and `exa-ai enrichment-update --help` to see all available parameters
+
 ## Create Enrichments
 
 ```bash
@@ -439,10 +445,21 @@ exa-ai enrichment-list ws_abc123 --output-format pretty
 # Get details
 exa-ai enrichment-get ws_abc123 enr_xyz789
 
-# Update
-exa-ai enrichment-update ws_abc123 enr_xyz789 --title "Company Size"
+# Update extraction prompt (description)
 exa-ai enrichment-update ws_abc123 enr_xyz789 \
   --description "Exact employee count from most recent source"
+
+# Update format and options
+exa-ai enrichment-update ws_abc123 enr_xyz789 \
+  --format options \
+  --options '[{"label":"Small"},{"label":"Medium"},{"label":"Large"}]'
+
+# Update metadata
+exa-ai enrichment-update ws_abc123 enr_xyz789 \
+  --metadata '{"source":"manual","updated":"2024-01-15"}'
+
+# Note: Cannot update --instructions or --title (creation-only parameters)
+# To change instructions, delete and recreate the enrichment
 
 # Delete
 exa-ai enrichment-delete ws_abc123 enr_xyz789
