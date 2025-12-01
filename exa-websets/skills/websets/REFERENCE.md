@@ -102,32 +102,45 @@ exa-ai webset-create --import webset_xyz789 --wait
 
 ##### With Enrichments (Not Recommended During Validation)
 
-```bash
-# DISCOURAGED: Adding enrichments during initial validation wastes credits
-# if the search returns bad results. Use the three-step workflow instead.
+**DISCOURAGED:** Adding enrichments during initial validation wastes credits if the search returns bad results. Use the three-step workflow below instead.
 
-# Better approach - validate, expand, then enrich:
-# 1. Create with count:1 to test
+**Step 1: VALIDATE - Create with count:1 (NO enrichments)**
+
+```bash
 webset_id=$(exa-ai webset-create \
   --search '{"query":"tech startups","count":1}' \
   --wait | jq -r '.webset_id')
 
-# STOP: Review the result to verify search quality
+# Review the result
 exa-ai webset-item-list $webset_id
-# Are the results relevant? If not, adjust query and try again.
+```
 
-# 2. If results look good, expand the search
+**⚠️ REQUIRED: Manually verify the result is relevant before continuing. If not, adjust the query and start over. DO NOT proceed to Step 2 without verification.**
+
+---
+
+**Step 2: EXPAND - Increase count only after validation**
+
+```bash
+# Use the webset_id from Step 1
 exa-ai webset-search-create $webset_id \
   --query "tech startups" \
   --mode override \
   --count 100 \
   --wait
 
-# STOP: Review expanded results before enriching
+# Review the expanded results
 exa-ai webset-item-list $webset_id
-# Do the results still look good at scale? Check for false positives.
+```
 
-# 3. Only add enrichments after confirming quality
+**⚠️ REQUIRED: Check for false positives at scale before continuing. DO NOT proceed to Step 3 without verification.**
+
+---
+
+**Step 3: ENRICH - Add enrichments only after confirming quality**
+
+```bash
+# Use the webset_id from Steps 1-2
 exa-ai enrichment-create $webset_id \
   --description "Company website" --format url --title "Website" --wait
 exa-ai enrichment-create $webset_id \
@@ -320,8 +333,9 @@ exa-ai webset-delete ws_abc123 --output-format json
 
 ## Complete Workflow: Create and Manage Webset
 
+**Step 1: VALIDATE - Create with count:1 to test search quality**
+
 ```bash
-# Step 1: VALIDATE - Create with count:1 to test search quality
 webset_id=$(exa-ai webset-create \
   --search '{"query":"AI startups Series A","count":1}' \
   --metadata '{"project":"market-research"}' \
@@ -329,36 +343,56 @@ webset_id=$(exa-ai webset-create \
 
 echo "Created webset: $webset_id"
 
-# STOP: Review the result to verify search quality
+# Review the result
 exa-ai webset-item-list $webset_id
-# Are the results relevant? If not, adjust query and try again.
+```
 
-# Step 2: EXPAND - If results are good, expand the search
+**⚠️ REQUIRED: Manually verify the result is relevant before continuing. If not, adjust the query and start over. DO NOT proceed to Step 2 without verification.**
+
+---
+
+**Step 2: EXPAND - Increase count only after validation**
+
+```bash
+# Use the webset_id from Step 1
 exa-ai webset-search-create $webset_id \
   --query "AI startups Series A" \
   --mode override \
   --count 100 \
   --wait
 
-# STOP: Review expanded results before enriching
+# Review the expanded results
 exa-ai webset-item-list $webset_id
-# Do the results still look good at scale? Check for false positives.
+```
 
-# Step 3: ENRICH - Only add enrichments after confirming quality
+**⚠️ REQUIRED: Check for false positives at scale before continuing. DO NOT proceed to Step 3 without verification.**
+
+---
+
+**Step 3: ENRICH - Add enrichments only after confirming quality**
+
+```bash
+# Use the webset_id from Steps 1-2
 exa-ai enrichment-create $webset_id \
   --description "Company website" --format url --title "Website" --wait
 
 exa-ai enrichment-create $webset_id \
   --description "Employee count" --format text --title "Team Size" --wait
 
-# 4. View enriched items
+# View enriched items
 exa-ai webset-item-list $webset_id
+```
 
-# 5. Update metadata
+---
+
+**Step 4: Update metadata and finalize**
+
+```bash
+# Update metadata
 exa-ai webset-update $webset_id \
   --metadata '{"project":"market-research","status":"completed"}'
 
-# 6. List all websets to verify
+# List all websets to verify
 exa-ai webset-list
 ```
 
@@ -413,33 +447,55 @@ Understanding credit usage helps manage costs effectively:
 
 ## Cloning and Templating
 
+**Creating a Template - Step 1: VALIDATE**
+
 ```bash
-# Create a template webset with minimal count (validate first)
 template_id=$(exa-ai webset-create \
   --search '{"query":"tech companies","count":1}' \
   --wait | jq -r '.webset_id')
 
-# STOP: Review the template result
+# Review the template result
 exa-ai webset-item-list $template_id
-# Are the results relevant? If not, adjust query and try again.
+```
 
-# After validation, expand and add enrichments
+**⚠️ REQUIRED: Verify the result before continuing. DO NOT proceed without verification.**
+
+---
+
+**Creating a Template - Step 2: EXPAND**
+
+```bash
+# Use the template_id from Step 1
 exa-ai webset-search-create $template_id \
   --query "tech companies" \
   --mode override \
   --count 100 \
   --wait
 
-# STOP: Review expanded results before enriching
+# Review expanded results
 exa-ai webset-item-list $template_id
+```
 
-# Add enrichments after confirming quality
+**⚠️ REQUIRED: Check for false positives before continuing. DO NOT proceed without verification.**
+
+---
+
+**Creating a Template - Step 3: ENRICH**
+
+```bash
+# Use the template_id from Steps 1-2
 exa-ai enrichment-create $template_id \
   --description "Company website" --format url --title "Website" --wait
 exa-ai enrichment-create $template_id \
   --description "Employee count" --format text --title "Team Size" --wait
+```
 
-# Clone the validated template for a new project
+---
+
+**Using the Template - Step 1: Clone and VALIDATE new search**
+
+```bash
+# Clone the validated template
 new_webset_id=$(exa-ai webset-create --import $template_id --wait | jq -r '.webset_id')
 
 # Update with new search - validate with count:1 first
@@ -449,11 +505,18 @@ exa-ai webset-search-create $new_webset_id \
   --count 1 \
   --wait
 
-# STOP: Review new search results
+# Review new search results
 exa-ai webset-item-list $new_webset_id
-# Are the results relevant?
+```
 
-# If good, expand the new search
+**⚠️ REQUIRED: Verify the new search results before expanding. DO NOT proceed without verification.**
+
+---
+
+**Using the Template - Step 2: EXPAND if validated**
+
+```bash
+# Use the new_webset_id from previous step
 exa-ai webset-search-create $new_webset_id \
   --query "AI startups 2024" \
   --mode override \

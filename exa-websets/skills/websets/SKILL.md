@@ -67,28 +67,43 @@ exa-ai webset-create --import $import_id --wait
 
 ### Add Enrichments After Validation
 
+**Step 1: VALIDATE - Create with count:1 (NO enrichments)**
+
 ```bash
-# Step 1: Create and validate search without enrichments
 webset_id=$(exa-ai webset-create \
   --search '{"query":"tech startups","count":1}' \
   --wait | jq -r '.webset_id')
 
-# STOP: Review the result to verify search quality
+# Review the result
 exa-ai webset-item-list $webset_id
-# Are the results relevant? If not, adjust query and try again.
+```
 
-# Step 2: If results look good, expand the search
+**⚠️ REQUIRED: Manually verify the result is relevant before continuing. If not, adjust the query and start over. DO NOT proceed to Step 2 without verification.**
+
+---
+
+**Step 2: EXPAND - Increase count only after validation**
+
+```bash
+# Use the webset_id from Step 1
 exa-ai webset-search-create $webset_id \
   --query "tech startups" \
   --mode override \
   --count 100 \
   --wait
 
-# STOP: Review expanded results before enriching
+# Review the expanded results
 exa-ai webset-item-list $webset_id
-# Do the results still look good at scale? Check for false positives.
+```
 
-# Step 3: Only add enrichments after confirming quality
+**⚠️ REQUIRED: Check for false positives at scale before continuing. DO NOT proceed to Step 3 without verification.**
+
+---
+
+**Step 3: ENRICH - Add enrichments only after confirming quality**
+
+```bash
+# Use the webset_id from Steps 1-2
 exa-ai enrichment-create $webset_id \
   --description "Company website" --format url --title "Website" --wait
 
