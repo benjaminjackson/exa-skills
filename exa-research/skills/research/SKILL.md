@@ -7,6 +7,21 @@ description: Use when the user mentions Exa research OR when the workflow benefi
 
 Manage asynchronous research tasks with exa-ai for complex, multi-step research workflows.
 
+## Cost Optimization
+
+### Pricing
+Research is the most expensive Exa endpoint:
+- **Agent search**: $0.005 per search operation
+- **Standard page read**: $0.005 per page
+- **Pro page read**: $0.010 per page (2x standard)
+- **Reasoning tokens**: $0.000005 per token
+
+**Cost strategy:**
+- **Avoid research unless required**: Most expensive option (2-10x cost premium over other endpoints)
+- Use only for autonomous, multi-step reasoning tasks that justify the cost
+- For simpler queries, use `search`, `answer`, or `get-contents` instead
+- Consider using `exa-research` (standard) instead of `exa-research-pro` unless you need the higher quality
+
 ## Research Overview
 
 Research tasks are asynchronous operations that allow you to:

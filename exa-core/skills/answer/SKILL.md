@@ -18,6 +18,16 @@ Token-efficient strategies for generating answers with structured output using e
    ```
 3. **Avoid --text**: Use `--text` only when you need full source text; otherwise rely on default behavior
 
+## Cost Optimization
+
+### Pricing
+- **Per answer**: $0.005
+
+**Cost strategy:**
+- Use `answer` for questions with moderate complexity that need AI synthesis
+- For simple lookups, use `search` instead (same cost but gives you URLs for verification)
+- Consider whether you need a synthesized answer or just search results
+
 ## Token Optimization
 
 **Apply these strategies:**

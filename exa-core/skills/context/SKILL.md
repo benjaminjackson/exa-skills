@@ -15,6 +15,17 @@ Token-efficient strategies for retrieving code context using exa-ai.
 2. **Use dynamic tokens**: Default `--tokens-num dynamic` adapts to content; specify exact number only when needed
 3. **Prefer text format**: Use `--output-format text` for direct use in prompts or documentation
 
+## Cost Optimization
+
+### Pricing
+- **1-25 results**: $0.005 per search
+- **26-100 results**: $0.025 per search (5x more expensive)
+
+**Cost strategy:**
+1. **Default to 1-25 results**: 5x cheaper, sufficient for most queries
+2. **Need 50+ results? Run multiple targeted searches**: Two 25-result searches with different angles beats one 50-result search (better quality, more control)
+3. **Use 26-100 results sparingly**: Only when you need comprehensive coverage that multiple targeted searches would miss
+
 ## Token Optimization
 
 **Apply these strategies:**

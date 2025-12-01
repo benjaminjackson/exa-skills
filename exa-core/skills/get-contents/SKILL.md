@@ -19,6 +19,18 @@ Token-efficient strategies for retrieving and extracting content from URLs using
    ```
 4. **Prefer --summary over --text**: Use summaries with schemas for structured extraction instead of full text
 
+## Cost Optimization
+
+### Pricing
+- **Per piece of content**: $0.001
+
+Each URL counts as one piece of content. Multiple URLs increase cost linearly.
+
+**Cost strategy:**
+- Only fetch URLs you need
+- Use `--summary` instead of `--text` to reduce processing (and token costs)
+- Combine with search results to target specific URLs rather than crawling broadly
+
 ## Token Optimization
 
 **Apply these strategies:**
