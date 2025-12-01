@@ -52,6 +52,30 @@ EOF
 exa-ai webset-create --search @search.json --wait
 ```
 
+##### With Detailed Criteria
+
+```bash
+cat > search.json <<'EOF'
+{
+  "query": "Technology companies focused on developer tools",
+  "count": 2,
+  "entity": {
+    "type": "company"
+  },
+  "criteria": [
+    {
+      "description": "Companies with 50-500 employees indicating growth stage"
+    },
+    {
+      "description": "Primary product is developer tools, APIs, or infrastructure"
+    }
+  ]
+}
+EOF
+
+exa-ai webset-create --search @search.json --wait
+```
+
 ##### From Import
 
 ```bash
@@ -116,8 +140,13 @@ The `--search` JSON supports these fields:
 - `query` (required): Search query string
 - `count`: Number of results to find
 - `category`: Entity category (company, person, research_paper, etc.)
+- `entity`: Object specifying entity type (alternative to `category`)
+  - `type`: Entity type (company, person, article, research_paper, custom)
+- `criteria`: Array of detailed search criteria objects
+  - `description`: Specific requirement or filter to apply
 
-Example:
+##### Basic Search
+
 ```json
 {
   "query": "AI safety research papers 2024",
@@ -125,6 +154,34 @@ Example:
   "category": "research paper"
 }
 ```
+
+##### Advanced Search with Criteria
+
+Use the `criteria` array to specify detailed requirements for more precise results:
+
+```json
+{
+  "query": "Technology companies focused on developer tools",
+  "count": 2,
+  "entity": {
+    "type": "company"
+  },
+  "criteria": [
+    {
+      "description": "Companies with 50-500 employees indicating growth stage"
+    },
+    {
+      "description": "Primary product is developer tools, APIs, or infrastructure"
+    }
+  ]
+}
+```
+
+Each criterion provides additional context that helps refine search results. Use criteria to specify:
+- Size or scale requirements (budget, employees, reach)
+- Core focus areas or mission alignment
+- Organizational characteristics (structure, programs, presence)
+- Geographic or temporal constraints
 
 ### webset-get
 

@@ -25,6 +25,28 @@ webset_id=$(exa-ai webset-create \
   --wait | jq -r '.webset_id')
 ```
 
+### Create with Detailed Search Criteria
+
+```bash
+exa-ai webset-create \
+  --search '{
+    "query": "Technology companies focused on developer tools",
+    "count": 2,
+    "entity": {
+      "type": "company"
+    },
+    "criteria": [
+      {
+        "description": "Companies with 50-500 employees indicating growth stage"
+      },
+      {
+        "description": "Primary product is developer tools, APIs, or infrastructure"
+      }
+    ]
+  }' \
+  --wait
+```
+
 ### Create from CSV Import
 
 ```bash
