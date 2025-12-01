@@ -33,18 +33,20 @@ exa-ai webset-create (--search JSON | --import ID) [OPTIONS]
 ##### From Search (Most Common)
 
 ```bash
+# Always start with count:1 to validate search quality before requesting more
 exa-ai webset-create \
-  --search '{"query":"AI startups in San Francisco","count":50}' \
+  --search '{"query":"AI startups in San Francisco","count":1}' \
   --wait
 ```
 
 ##### From Search with File
 
 ```bash
+# Start with minimal count for validation
 cat > search.json <<'EOF'
 {
   "query": "SaaS companies Series A funding",
-  "count": 100,
+  "count": 1,
   "category": "company"
 }
 EOF
@@ -55,10 +57,11 @@ exa-ai webset-create --search @search.json --wait
 ##### With Detailed Criteria
 
 ```bash
+# Test detailed criteria with minimal count first
 cat > search.json <<'EOF'
 {
   "query": "Technology companies focused on developer tools",
-  "count": 2,
+  "count": 1,
   "entity": {
     "type": "company"
   },
@@ -100,8 +103,9 @@ exa-ai webset-create --import webset_xyz789 --wait
 ##### With Enrichments
 
 ```bash
+# Start with count:1 to validate both search and enrichment quality
 exa-ai webset-create \
-  --search '{"query":"tech startups","count":50}' \
+  --search '{"query":"tech startups","count":1}' \
   --enrichments '[
     {
       "description": "Company website",
@@ -118,8 +122,9 @@ exa-ai webset-create \
 ##### With Metadata
 
 ```bash
+# Add metadata while keeping count minimal for initial validation
 exa-ai webset-create \
-  --search '{"query":"competitors","count":25}' \
+  --search '{"query":"competitors","count":1}' \
   --metadata '{"project":"market-research","created_by":"team"}' \
   --wait
 ```
@@ -127,8 +132,9 @@ exa-ai webset-create \
 ##### Save Webset ID
 
 ```bash
+# Validate search with count:1, then scale up if results are good
 webset_id=$(exa-ai webset-create \
-  --search '{"query":"B2B SaaS companies","count":100}' \
+  --search '{"query":"B2B SaaS companies","count":1}' \
   --wait | jq -r '.webset_id')
 
 echo "Created webset: $webset_id"
@@ -150,7 +156,7 @@ The `--search` JSON supports these fields:
 ```json
 {
   "query": "AI safety research papers 2024",
-  "count": 100,
+  "count": 1,
   "category": "research paper"
 }
 ```
@@ -162,7 +168,7 @@ Use the `criteria` array to specify detailed requirements for more precise resul
 ```json
 {
   "query": "Technology companies focused on developer tools",
-  "count": 2,
+  "count": 1,
   "entity": {
     "type": "company"
   },
@@ -300,9 +306,9 @@ exa-ai webset-delete ws_abc123 --output-format json
 ## Complete Workflow: Create and Manage Webset
 
 ```bash
-# 1. Create webset from search
+# 1. Create webset from search with minimal count for validation
 webset_id=$(exa-ai webset-create \
-  --search '{"query":"AI startups Series A","count":100}' \
+  --search '{"query":"AI startups Series A","count":1}' \
   --metadata '{"project":"market-research"}' \
   --wait | jq -r '.webset_id')
 
@@ -341,26 +347,46 @@ When creating websets, you can specify entity types for better results:
 
 Example:
 ```bash
+# Start with count:1 to validate entity type results
 exa-ai webset-create \
-  --search '{"query":"ML researchers","count":50,"category":"person"}' \
+  --search '{"query":"ML researchers","count":1,"category":"person"}' \
   --wait
 ```
 
+## Credit Costs
+
+Understanding credit usage helps manage costs effectively:
+
+**Pricing**: $50/month = 8,000 credits ($0.00625 per credit)
+
+**Cost per operation**:
+- Each webset item: 10 credits ($0.0625)
+- Standard enrichment: 2 credits ($0.0125)
+- Email enrichment: 5 credits ($0.03125)
+
+**Example cost calculation**:
+- 100 items = 1,000 credits ($6.25)
+- 100 items + 2 enrichments each = 1,400 credits ($8.75)
+- 100 items + email enrichment = 1,500 credits ($9.38)
+
+**Why start with count:1**: Testing with 1 result costs just 10 credits ($0.0625). A failed search with count:100 wastes 1,000 credits ($6.25) - 100x more expensive.
+
 ## Best Practices
 
-1. **Use --wait when creating**: Wait for websets to reach idle status before enriching
-2. **Choose appropriate entity types**: Use specific types (company, person, etc.) for better results
-3. **Add metadata for organization**: Track project, owner, status, etc.
-4. **Save webset IDs**: Use `jq` to extract and save IDs for subsequent commands
-5. **Clone websets for experimentation**: Use `--import webset_id` to duplicate existing websets
-6. **Use external IDs for integration**: Link websets to your external systems
+1. **Start small, validate, then scale**: Always use count:1 for initial searches to verify quality. Only increase count after confirming results are useful and not false positives.
+2. **Use --wait strategically**: Use --wait for small searches (count ≤ 5) to get immediate results. Avoid --wait for large searches to prevent blocking.
+3. **Choose appropriate entity types**: Use specific types (company, person, etc.) for better results
+4. **Add metadata for organization**: Track project, owner, status, etc.
+5. **Save webset IDs**: Use `jq` to extract and save IDs for subsequent commands
+6. **Clone websets for experimentation**: Use `--import webset_id` to duplicate existing websets
+7. **Use external IDs for integration**: Link websets to your external systems
 
 ## Cloning and Templating
 
 ```bash
-# Create a template webset
+# Create a template webset with minimal count
 template_id=$(exa-ai webset-create \
-  --search '{"query":"tech companies","count":10}' \
+  --search '{"query":"tech companies","count":1}' \
   --enrichments '[
     {"description":"Company website","format":"url"},
     {"description":"Employee count","format":"text"}
@@ -370,11 +396,11 @@ template_id=$(exa-ai webset-create \
 # Clone it for a new project
 new_webset_id=$(exa-ai webset-create --import $template_id --wait | jq -r '.webset_id')
 
-# Update with new search
+# Update with new search - validate with low count first
 exa-ai webset-search-create $new_webset_id \
   --query "AI startups 2024" \
   --mode override \
-  --count 100 \
+  --count 1 \
   --wait
 ```
 

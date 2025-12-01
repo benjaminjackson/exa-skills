@@ -11,9 +11,10 @@ Run searches within a webset to add new items based on search criteria.
 
 **MUST follow these rules when using searches:**
 
-1. **Use specific queries**: Targeted queries yield better results than broad ones
-2. **Choose the right mode**: Use `append` to add items, `override` to replace entire collection
-3. **Use --wait for large searches**: Wait for search to complete before viewing results
+1. **Start with minimal counts (1-5 results)**: Initial searches are test spikes to validate query quality. ALWAYS default to count:1 unless user explicitly requests more. Only increase count after confirming the search returns useful results, not false positives.
+2. **Use --wait for quick searches, avoid for long ones**: Use --wait for small searches (count ≤ 5) since they complete quickly. Avoid --wait for large searches to prevent blocking.
+3. **Use specific queries**: Targeted queries yield better results than broad ones
+4. **Choose the right mode**: Use `append` to add items, `override` to replace entire collection
 
 ## Search Modes
 
@@ -25,41 +26,41 @@ Run searches within a webset to add new items based on search criteria.
 ### Basic Search
 
 ```bash
-# Add items to existing webset
+# Start with count:1 to validate search quality before adding more items
 exa-ai webset-search-create ws_abc123 \
   --query "AI startups in San Francisco" \
-  --count 50 \
+  --count 1 \
   --wait
 ```
 
 ### Append to Collection
 
 ```bash
-# Add more items without removing existing ones
+# Test query with count:1 before appending more items
 exa-ai webset-search-create ws_abc123 \
   --query "SaaS companies Series B" \
   --mode append \
-  --count 25
+  --count 1
 ```
 
 ### Override Collection
 
 ```bash
-# Replace entire collection
+# Validate query with minimal count before overriding entire collection
 exa-ai webset-search-create ws_abc123 \
-  --query "top 100 tech companies" \
+  --query "top tech companies" \
   --mode override \
-  --count 100 \
+  --count 1 \
   --wait
 ```
 
 ### Monitor Search Progress
 
 ```bash
-# Start search
+# Start search with minimal count to test
 search_id=$(exa-ai webset-search-create ws_abc123 \
   --query "fintech startups" \
-  --count 100 | jq -r '.search_id')
+  --count 1 | jq -r '.search_id')
 
 # Check status
 exa-ai webset-search-get $search_id
@@ -73,58 +74,58 @@ exa-ai webset-search-cancel $search_id
 ### Use Specific Queries
 
 ```bash
-# Good - specific and targeted
+# Good - specific and targeted, start with count:1
 exa-ai webset-search-create ws_abc123 \
   --query "YC W24 batch startups" \
-  --count 50
+  --count 1
 
-# Less effective - too broad
+# Less effective - too broad (still use count:1 to test)
 exa-ai webset-search-create ws_abc123 \
   --query "startups" \
-  --count 50
+  --count 1
 ```
 
 ### Time-Based Queries
 
 ```bash
-# Recent content
+# Recent content - validate with count:1 first
 exa-ai webset-search-create ws_abc123 \
   --query "AI research papers published:2024" \
-  --count 100
+  --count 1
 
-# Last month
+# Last month - test before scaling up
 exa-ai webset-search-create ws_abc123 \
   --query "tech news published:last-month" \
-  --count 50
+  --count 1
 ```
 
 ### Category-Specific Queries
 
 ```bash
-# Companies
+# Companies - start with minimal count
 exa-ai webset-search-create ws_abc123 \
   --query "B2B SaaS companies revenue:$10M+" \
-  --count 100
+  --count 1
 
-# Research papers
+# Research papers - validate query quality first
 exa-ai webset-search-create ws_abc123 \
   --query "machine learning papers arxiv" \
-  --count 50
+  --count 1
 ```
 
 ## Complete Workflow
 
 ```bash
-# 1. Create webset
+# 1. Create webset with minimal count to validate
 webset_id=$(exa-ai webset-create \
-  --search '{"query":"AI startups","count":50}' \
+  --search '{"query":"AI startups","count":1}' \
   --wait | jq -r '.webset_id')
 
-# 2. Add more items with search
+# 2. Add more items with search (test with count:1 first)
 exa-ai webset-search-create $webset_id \
   --query "biotech startups" \
   --mode append \
-  --count 25 \
+  --count 1 \
   --wait
 
 # 3. Check results
