@@ -14,6 +14,9 @@ exa-ai get-contents URLS [OPTIONS]
 
 ## Common Options
 
+### Livecrawl (Always Use This)
+- `--livecrawl-timeout N`: Timeout for live crawling in milliseconds (recommended: 10000)
+
 ### Text Extraction
 - `--text`: Include page text in response
 - `--text-max-characters N`: Max characters for page text
@@ -37,18 +40,19 @@ exa-ai get-contents URLS [OPTIONS]
 
 ### Basic Content Retrieval with Summary
 ```bash
-exa-ai get-contents "https://anthropic.com" --summary --output-format toon
+exa-ai get-contents "https://anthropic.com" --summary --livecrawl-timeout 10000 --output-format toon
 ```
 
 ### Extract Summary Only
 ```bash
-exa-ai get-contents "https://openai.com/research" --summary | jq '.results[].summary'
+exa-ai get-contents "https://openai.com/research" --summary --livecrawl-timeout 10000 | jq '.results[].summary'
 ```
 
 ### Custom Summary Query
 ```bash
 exa-ai get-contents "https://techcrunch.com" \
   --summary \
+  --livecrawl-timeout 10000 \
   --summary-query "What are the main tech news stories on this page?" | jq '.results[].summary'
 ```
 
@@ -56,6 +60,7 @@ exa-ai get-contents "https://techcrunch.com" \
 ```bash
 exa-ai get-contents "https://www.ycombinator.com/companies" \
   --summary \
+  --livecrawl-timeout 10000 \
   --summary-schema '{"type":"object","properties":{"company_name":{"type":"string"},"description":{"type":"string"},"industry":{"type":"string"}}}' | jq -r '.results[].summary | fromjson | "\(.company_name) - \(.industry)\n\(.description)\n"'
 ```
 
@@ -63,6 +68,7 @@ exa-ai get-contents "https://www.ycombinator.com/companies" \
 ```bash
 exa-ai get-contents "https://anthropic.com,https://openai.com,https://cohere.com" \
   --summary \
+  --livecrawl-timeout 10000 \
   --output-format toon
 ```
 
@@ -70,6 +76,7 @@ exa-ai get-contents "https://anthropic.com,https://openai.com,https://cohere.com
 ```bash
 exa-ai get-contents "https://www.stripe.com" \
   --summary \
+  --livecrawl-timeout 10000 \
   --summary-schema '{"type":"object","properties":{"company_name":{"type":"string"},"main_product":{"type":"string"},"target_market":{"type":"string"}}}' | jq -r '.results[].summary | fromjson'
 ```
 
@@ -78,6 +85,7 @@ exa-ai get-contents "https://www.stripe.com" \
 exa-ai get-contents "https://example.com" \
   --links 10 \
   --image-links 5 \
+  --livecrawl-timeout 10000 \
   --output-format toon
 ```
 
@@ -86,6 +94,7 @@ exa-ai get-contents "https://example.com" \
 # Only use --text when you need the full page content
 exa-ai get-contents "https://docs.anthropic.com" \
   --text \
+  --livecrawl-timeout 10000 \
   --text-max-characters 5000
 ```
 
@@ -94,6 +103,7 @@ exa-ai get-contents "https://docs.anthropic.com" \
 exa-ai get-contents "https://example.com" \
   --subpages 2 \
   --subpage-target "about" \
+  --livecrawl-timeout 10000 \
   --summary
 ```
 
@@ -101,19 +111,20 @@ exa-ai get-contents "https://example.com" \
 
 ```bash
 # ❌ High token usage - full text
-exa-ai get-contents "https://example.com" --text
+exa-ai get-contents "https://example.com" --text --livecrawl-timeout 10000
 
 # ✅ Better - summary only with jq extraction
-exa-ai get-contents "https://example.com" --summary | jq '.results[].summary'
+exa-ai get-contents "https://example.com" --summary --livecrawl-timeout 10000 | jq '.results[].summary'
 
 # ✅ Best - structured extraction with schema + jq
 exa-ai get-contents "https://example.com" \
   --summary \
+  --livecrawl-timeout 10000 \
   --summary-schema '{"type":"object","properties":{"key_info":{"type":"string"}}}' | \
   jq -r '.results[].summary | fromjson | .key_info'
 
 # ✅ Alternative - toon format for direct reading (no jq)
-exa-ai get-contents "https://example.com" --summary --output-format toon
+exa-ai get-contents "https://example.com" --summary --livecrawl-timeout 10000 --output-format toon
 ```
 
 ## Workflow Example: Extract Product Info from Multiple Companies
@@ -125,6 +136,7 @@ urls="https://anthropic.com,https://openai.com,https://cohere.com"
 # Extract structured data
 exa-ai get-contents "$urls" \
   --summary \
+  --livecrawl-timeout 10000 \
   --summary-schema '{
     "type":"object",
     "properties":{

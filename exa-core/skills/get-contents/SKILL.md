@@ -12,11 +12,12 @@ Token-efficient strategies for retrieving and extracting content from URLs using
 **MUST follow these rules when using exa-ai get-contents:**
 
 1. **Always run --help first**: Before using the command for the first time, run `exa-ai get-contents --help`
-2. **Use object wrapper for schemas**: When using `--summary-schema`, always wrap properties:
+2. **Always use livecrawl**: Include `--livecrawl-timeout 10000` for fresh, up-to-date content
+3. **Use object wrapper for schemas**: When using `--summary-schema`, always wrap properties:
    ```json
    {"type":"object","properties":{"field_name":{"type":"string"}}}
    ```
-3. **Prefer --summary over --text**: Use summaries with schemas for structured extraction instead of full text
+4. **Prefer --summary over --text**: Use summaries with schemas for structured extraction instead of full text
 
 ## Token Optimization
 
@@ -36,17 +37,18 @@ Token-efficient strategies for retrieving and extracting content from URLs using
 Examples:
 ```bash
 # ❌ High token usage - full text
-exa-ai get-contents "https://example.com" --text
+exa-ai get-contents "https://example.com" --text --livecrawl-timeout 10000
 
 # ✅ Approach 1: toon format with summary (70% reduction)
-exa-ai get-contents "https://example.com" --summary --output-format toon
+exa-ai get-contents "https://example.com" --summary --livecrawl-timeout 10000 --output-format toon
 
 # ✅ Approach 2: JSON + jq for summary extraction (80% reduction)
-exa-ai get-contents "https://example.com" --summary | jq '.results[].summary'
+exa-ai get-contents "https://example.com" --summary --livecrawl-timeout 10000 | jq '.results[].summary'
 
 # ✅ Approach 3: Schema + jq for structured extraction (85% reduction)
 exa-ai get-contents "https://example.com" \
   --summary \
+  --livecrawl-timeout 10000 \
   --summary-schema '{"type":"object","properties":{"key_info":{"type":"string"}}}' | \
   jq -r '.results[].summary | fromjson | .key_info'
 
@@ -58,13 +60,14 @@ exa-ai get-contents "https://example.com" --output-format toon | jq -r '.results
 
 ### Basic Content with Summary
 ```bash
-exa-ai get-contents "https://anthropic.com" --summary --output-format toon
+exa-ai get-contents "https://anthropic.com" --summary --livecrawl-timeout 10000 --output-format toon
 ```
 
 ### Custom Summary Query
 ```bash
 exa-ai get-contents "https://techcrunch.com" \
   --summary \
+  --livecrawl-timeout 10000 \
   --summary-query "What are the main tech news stories on this page?" | jq '.results[].summary'
 ```
 
@@ -72,6 +75,7 @@ exa-ai get-contents "https://techcrunch.com" \
 ```bash
 exa-ai get-contents "https://www.stripe.com" \
   --summary \
+  --livecrawl-timeout 10000 \
   --summary-schema '{"type":"object","properties":{"company_name":{"type":"string"},"main_product":{"type":"string"},"target_market":{"type":"string"}}}' | jq -r '.results[].summary | fromjson'
 ```
 
@@ -79,6 +83,7 @@ exa-ai get-contents "https://www.stripe.com" \
 ```bash
 exa-ai get-contents "https://anthropic.com,https://openai.com,https://cohere.com" \
   --summary \
+  --livecrawl-timeout 10000 \
   --output-format toon
 ```
 
