@@ -14,8 +14,8 @@ Comprehensive webset management including creation, search, imports, items, and 
 1. **Start with minimal counts (1-5 results)**: Initial searches are test spikes to validate quality. ALWAYS default to count:1 unless user explicitly requests more.
 2. **Three-step workflow - Validate, Expand, Enrich**: (1) Create with count:1 to test search quality, (2) Expand search count if results are good, (3) Add enrichments only after validated, expanded results.
 3. **No enrichments during validation**: Never add enrichments when testing with count:1. Validate search quality first, expand count second, add enrichments last.
-4. **Use --wait strategically**: Use --wait for small searches (count ≤ 5). Avoid --wait for large searches.
-5. **Maintain query consistency**: When scaling up searches, use the exact same query and criteria that you validated.
+4. **Use --wait strategically**: Use `--wait` with `webset-create` for small searches (count ≤ 5). Do NOT use `--wait` with `webset-search-create` (not supported).
+5. **Maintain query AND criteria consistency**: When scaling up or appending searches, use the EXACT same query AND criteria that you validated. Omitting criteria causes Exa to regenerate them on-the-fly, producing inconsistent results.
 
 ## Credit Costs
 
@@ -138,12 +138,11 @@ exa-ai webset-item-list $webset_id
 ### Step 2: EXPAND - Gradually increase count with verification at each stage
 
 ```bash
-# Expand to 2 results
+# Expand to 2 results (use same query and criteria from validation)
 exa-ai webset-search-create $webset_id \
   --query "tech startups" \
-  --mode override \
-  --count 2 \
-  --wait
+  --behavior override \
+  --count 2
 
 exa-ai webset-item-list $webset_id
 ```
@@ -179,27 +178,70 @@ exa-ai webset-delete ws_abc123
 
 Run searches within a webset to add new items.
 
-## Search Modes
+## Search Behavior
 
-- **append**: Add new items to existing collection (default)
-- **override**: Replace entire collection with search results
+- **append**: Add new items to existing collection
+- **override**: Replace entire collection with search results (default)
 
-## Query Consistency
+## Query and Criteria Consistency
 
-When scaling up searches, use the exact same query:
+**CRITICAL**: When appending or scaling up searches, maintain IDENTICAL query and criteria from your validated search.
+
+### Why This Matters
+
+Using different criteria causes Exa to generate new search parameters on-the-fly, which:
+- Violates consistency and produces mismatched results
+- Reduces result quality compared to validated criteria
+- Makes it impossible to reproduce or debug issues
+
+### Complete Example
 
 ```bash
-# Test search
+# Step 1: Test search with criteria
 exa-ai webset-search-create ws_abc123 \
-  --query "AI startups SF founded:2024" \
+  --query "Progressive nonprofits in California" \
   --count 1 \
-  --wait
+  --criteria '[
+    {"description": "Annual budget between $1M and $10M"},
+    {"description": "Primary focus on economic justice, affordability, living wages, or worker power"},
+    {"description": "Established communications, narrative strategy, or messaging function"}
+  ]'
 
-# Scale up with IDENTICAL query
+# Verify quality, then append MORE results with IDENTICAL query and criteria
 exa-ai webset-search-create ws_abc123 \
-  --query "AI startups SF founded:2024" \
-  --mode append \
-  --count 5
+  --query "Progressive nonprofits in California" \
+  --behavior append \
+  --count 5 \
+  --criteria '[
+    {"description": "Annual budget between $1M and $10M"},
+    {"description": "Primary focus on economic justice, affordability, living wages, or worker power"},
+    {"description": "Established communications, narrative strategy, or messaging function"}
+  ]'
+```
+
+### Best Practice: Save Criteria to File
+
+```bash
+# Create criteria file once
+cat > criteria.json <<'EOF'
+[
+  {"description": "Annual budget between $1M and $10M"},
+  {"description": "Primary focus on economic justice, affordability, living wages, or worker power"},
+  {"description": "Established communications, narrative strategy, or messaging function"}
+]
+EOF
+
+# Use consistently across all searches
+exa-ai webset-search-create ws_abc123 \
+  --query "Progressive nonprofits in California" \
+  --count 1 \
+  --criteria @criteria.json
+
+exa-ai webset-search-create ws_abc123 \
+  --query "Progressive nonprofits in California" \
+  --behavior append \
+  --count 5 \
+  --criteria @criteria.json
 ```
 
 ## Basic Search Operations
@@ -208,32 +250,31 @@ exa-ai webset-search-create ws_abc123 \
 # Basic search
 exa-ai webset-search-create ws_abc123 \
   --query "AI startups in San Francisco" \
-  --count 1 \
-  --wait
+  --count 1
 
 # Append to collection
 exa-ai webset-search-create ws_abc123 \
   --query "SaaS companies Series B" \
-  --mode append \
+  --behavior append \
   --count 1
 
 # Override collection
 exa-ai webset-search-create ws_abc123 \
   --query "top tech companies" \
-  --mode override \
-  --count 1 \
-  --wait
+  --behavior override \
+  --count 1
 ```
 
 ## Monitor Search Progress
 
 ```bash
-search_id=$(exa-ai webset-search-create ws_abc123 \
+webset_id="ws_abc123"
+search_id=$(exa-ai webset-search-create $webset_id \
   --query "fintech startups" \
   --count 1 | jq -r '.search_id')
 
-exa-ai webset-search-get $search_id
-exa-ai webset-search-cancel $search_id
+exa-ai webset-search-get $webset_id $search_id
+exa-ai webset-search-cancel $webset_id $search_id
 ```
 
 ---
@@ -304,10 +345,10 @@ exa-ai webset-item-delete item_xyz789
 
 ```bash
 # Get all item IDs
-exa-ai webset-item-list ws_abc123 --output-format json | jq -r '.items[].id'
+exa-ai webset-item-list ws_abc123 --output-format json | jq -r '.[].id'
 
 # Count items
-exa-ai webset-item-list ws_abc123 --output-format json | jq '.items | length'
+exa-ai webset-item-list ws_abc123 --output-format json | jq 'length'
 ```
 
 ---
@@ -425,10 +466,15 @@ exa-ai enrichment-cancel ws_abc123 enr_xyz789
 1. **Start small, validate, then scale**: Always use count:1 for initial searches
 2. **Follow three-step workflow**: Validate → Expand → Enrich
 3. **Never enrich during validation**: Only enrich after validated, expanded results
-4. **Use --wait strategically**: Use for small searches (count ≤ 5), avoid for large searches
-5. **Maintain query consistency**: Use exact same query when scaling up
-6. **Choose specific entity types**: Use company, person, etc. for better results
-7. **Save IDs**: Use `jq` to extract and save IDs for subsequent commands
+4. **Use --wait strategically**:
+   - Use `--wait` with `webset-create` for small searches (count ≤ 5)
+   - Do NOT use `--wait` with `webset-search-create` (not supported)
+5. **Maintain query AND criteria consistency**: When appending or scaling up, use IDENTICAL query and criteria from validated search. Save criteria to file for consistency.
+6. **Use correct parameter names**:
+   - Use `--behavior append` or `--behavior override` (NOT `--mode`)
+   - Commands like `webset-search-get` require both webset_id and search_id
+7. **Choose specific entity types**: Use company, person, etc. for better results
+8. **Save IDs**: Use `jq` to extract and save IDs for subsequent commands
 
 ---
 
