@@ -180,8 +180,18 @@ Run searches within a webset to add new items.
 
 ## Search Behavior
 
-- **append**: Add new items to existing collection
-- **override**: Replace entire collection with search results (default)
+Control how new search results are combined with existing items:
+
+- **append** (default): Add new items to existing collection
+  - Requires previous search results to exist
+  - Error if webset has no previous search: "No previous search found"
+  - Default behavior when `--behavior` is omitted
+
+- **override**: Replace entire collection with search results
+  - REQUIRED for first search on a webset
+  - Use when starting fresh or completely replacing results
+
+**CRITICAL - First search requirement**: The first `webset-search-create` on a webset MUST explicitly use `--behavior override`. Since the default is append, omitting `--behavior` will fail with "No previous search found" error. Subsequent searches can omit the flag (defaults to append).
 
 ## Query and Criteria Consistency
 
@@ -197,9 +207,10 @@ Using different criteria causes Exa to generate new search parameters on-the-fly
 ### Complete Example
 
 ```bash
-# Step 1: Test search with criteria
+# Step 1: Test search with criteria (MUST use override for first search)
 exa-ai webset-search-create ws_abc123 \
   --query "Progressive nonprofits in California" \
+  --behavior override \
   --count 1 \
   --criteria '[
     {"description": "Annual budget between $1M and $10M"},
@@ -231,9 +242,10 @@ cat > criteria.json <<'EOF'
 ]
 EOF
 
-# Use consistently across all searches
+# Use consistently across all searches (first search needs override)
 exa-ai webset-search-create ws_abc123 \
   --query "Progressive nonprofits in California" \
+  --behavior override \
   --count 1 \
   --criteria @criteria.json
 
@@ -247,9 +259,10 @@ exa-ai webset-search-create ws_abc123 \
 ## Basic Search Operations
 
 ```bash
-# Basic search
+# First search on webset (must use override)
 exa-ai webset-search-create ws_abc123 \
   --query "AI startups in San Francisco" \
+  --behavior override \
   --count 1
 
 # Append to collection
@@ -271,6 +284,7 @@ exa-ai webset-search-create ws_abc123 \
 webset_id="ws_abc123"
 search_id=$(exa-ai webset-search-create $webset_id \
   --query "fintech startups" \
+  --behavior override \
   --count 1 | jq -r '.search_id')
 
 exa-ai webset-search-get $webset_id $search_id
@@ -487,11 +501,12 @@ exa-ai enrichment-cancel ws_abc123 enr_xyz789
    - Use `--wait` with `webset-create` for small searches (count ≤ 5)
    - Do NOT use `--wait` with `webset-search-create` (not supported)
 5. **Maintain query AND criteria consistency**: When appending or scaling up, use IDENTICAL query and criteria from validated search. Save criteria to file for consistency.
-6. **Use correct parameter names**:
+6. **CRITICAL - First search must use override**: The library defaults to `--behavior append`. First search on a webset MUST explicitly use `--behavior override` or it will fail with "No previous search found" error.
+7. **Use correct parameter names**:
    - Use `--behavior append` or `--behavior override` (NOT `--mode`)
    - Commands like `webset-search-get` require both webset_id and search_id
-7. **Choose specific entity types**: Use company, person, etc. for better results
-8. **Save IDs**: Use `jq` to extract and save IDs for subsequent commands
+8. **Choose specific entity types**: Use company, person, etc. for better results
+9. **Save IDs**: Use `jq` to extract and save IDs for subsequent commands
 
 ---
 
