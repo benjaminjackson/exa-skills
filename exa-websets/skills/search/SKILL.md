@@ -337,6 +337,28 @@ exa-ai import-get imp_abc123
 
 ---
 
+# Import vs Search Scope
+
+`--import` loads data for enrichment. `search.scope` filters searches to specific sources.
+
+**⚠️ NEVER use same ID in both - returns 400:**
+
+```bash
+# ❌ INVALID
+exa-ai webset-create --import import_abc \
+  --search '{"scope":[{"source":"import","id":"import_abc"}]}'
+
+# ✅ Scoped search only
+exa-ai webset-create \
+  --search '{"query":"CEOs","scope":[{"source":"import","id":"import_abc"}]}'
+
+# ✅ Relationship traversal
+exa-ai webset-search-create ws_abc --query "investors" --behavior override \
+  --scope '[{"source":"webset","id":"webset_abc","relationship":{"definition":"investors of","limit":5}}]'
+```
+
+---
+
 # Item Management
 
 Manage individual items in websets.

@@ -14,6 +14,14 @@ Create a new webset from search criteria or an import.
 exa-ai webset-create (--search JSON | --import ID) [OPTIONS]
 ```
 
+#### ⚠️ NEVER use same import ID in both --import and search.scope (returns 400)
+
+```bash
+# ❌ INVALID
+exa-ai webset-create --import import_abc \
+  --search '{"scope":[{"source":"import","id":"import_abc"}]}'
+```
+
 #### Examples
 
 ##### From Search (Most Common)
@@ -50,6 +58,33 @@ webset_id=$(exa-ai webset-create \
 echo "Created webset: $webset_id"
 ```
 
+##### Scoped Search Within Import
+
+```bash
+# Search within an existing import (not the entire web)
+exa-ai webset-create \
+  --search '{"query":"C-level executives","count":10,"scope":[{"source":"import","id":"import_abc123"}]}' \
+  --wait
+```
+
+##### Scoped Search Within Webset
+
+```bash
+# Search within another webset
+exa-ai webset-create \
+  --search '{"query":"board members","count":5,"scope":[{"source":"webset","id":"webset_abc"}]}' \
+  --wait
+```
+
+##### Hop Search (Relationship Traversal)
+
+```bash
+# Find related entities - e.g., investors of companies in a webset
+exa-ai webset-create \
+  --search '{"query":"investors","count":1,"scope":[{"source":"webset","id":"webset_abc","relationship":{"definition":"investors of","limit":5}}]}' \
+  --wait
+```
+
 #### Search Configuration
 
 The `--search` JSON supports these fields:
@@ -60,6 +95,7 @@ The `--search` JSON supports these fields:
   - `type`: Entity type (company, person, article, research_paper, custom)
 - `criteria`: Array of detailed search criteria objects
   - `description`: Specific requirement or filter to apply
+- `scope`: Array of `{source, id, relationship}` to filter search to specific imports/websets
 
 ##### Entities
 

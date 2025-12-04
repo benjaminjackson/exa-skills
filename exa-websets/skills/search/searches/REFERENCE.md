@@ -74,6 +74,20 @@ exa-ai webset-search-create ws_abc123 \
 - Your test search validated one set of results; changing the query invalidates that validation
 - You'll end up with inconsistent items in your webset
 
+#### Search Scope
+
+Use `--scope` to filter searches to specific imports/websets instead of searching the entire web.
+
+```bash
+# Scoped search within import
+exa-ai webset-search-create ws_abc --query "CEOs" --behavior override \
+  --scope '[{"source":"import","id":"import_abc"}]'
+
+# Relationship traversal (hop search)
+exa-ai webset-search-create ws_investors --query "investors" --behavior override \
+  --scope '[{"source":"webset","id":"webset_abc","relationship":{"definition":"investors of","limit":5}}]'
+```
+
 #### Examples
 
 ##### Basic Search
