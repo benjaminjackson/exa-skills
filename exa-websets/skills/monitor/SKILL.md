@@ -7,6 +7,11 @@ description: Use when setting up monitors - periodic searches to add new items o
 
 Automate webset updates on a schedule using monitors.
 
+**Use `--help` to see available commands and verify usage before running:**
+```bash
+exa-ai <command> --help
+```
+
 ## Critical Requirements
 
 **MUST follow these rules when using monitors:**
@@ -107,7 +112,7 @@ exa-ai monitor-runs-list $monitor_id
 1. **Use separate monitors for search and refresh**: Create one monitor for adding new items and another for refreshing existing ones
 2. **Schedule refreshes during off-peak hours**: Run refresh monitors at night to avoid rate limits
 3. **Use append mode for continuous growth**: Only use override when you want to completely replace the collection
-4. **Set appropriate timezones**: Use your local timezone for business-hour schedules
+3. **Set appropriate timezones**: Use your local timezone for business-hour schedules
 5. **Monitor execution history**: Check runs regularly to ensure monitors are working as expected
 6. **Start with conservative schedules**: Begin with daily or weekly runs, then increase frequency if needed
 

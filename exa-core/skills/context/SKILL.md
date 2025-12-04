@@ -7,13 +7,17 @@ description: Get code context from repositories with examples and documentation.
 
 Token-efficient strategies for retrieving code context using exa-ai.
 
+**Use `--help` to see available commands and verify usage before running:**
+```bash
+exa-ai <command> --help
+```
+
 ## Critical Requirements
 
 **MUST follow these rules when using exa-ai context:**
 
-1. **Always run --help first**: Before using the command for the first time, run `exa-ai context --help`
-2. **Use dynamic tokens**: Default `--tokens-num dynamic` adapts to content; specify exact number only when needed
-3. **Prefer text format**: Use `--output-format text` for direct use in prompts or documentation
+1. **Use dynamic tokens**: Default `--tokens-num dynamic` adapts to content; specify exact number only when needed
+2. **Prefer text format**: Use `--output-format text` for direct use in prompts or documentation
 
 ## Cost Optimization
 

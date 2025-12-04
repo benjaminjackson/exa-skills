@@ -7,6 +7,11 @@ description: Use for creating websets, running searches, importing CSV data, man
 
 Comprehensive webset management including creation, search, imports, items, and enrichments.
 
+**Use `--help` to see available commands and verify usage before running:**
+```bash
+exa-ai <command> --help
+```
+
 ## Critical Requirements
 
 **Universal rules across all operations:**

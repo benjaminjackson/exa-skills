@@ -7,17 +7,21 @@ description: Retrieve and extract content from URLs with AI-powered summarizatio
 
 Token-efficient strategies for retrieving and extracting content from URLs using exa-ai.
 
+**Use `--help` to see available commands and verify usage before running:**
+```bash
+exa-ai <command> --help
+```
+
 ## Critical Requirements
 
 **MUST follow these rules when using exa-ai get-contents:**
 
-1. **Always run --help first**: Before using the command for the first time, run `exa-ai get-contents --help`
-2. **Always use livecrawl**: Include `--livecrawl-timeout 10000` for fresh, up-to-date content
-3. **Use object wrapper for schemas**: When using `--summary-schema`, always wrap properties:
+1. **Always use livecrawl**: Include `--livecrawl-timeout 10000` for fresh, up-to-date content
+2. **Use object wrapper for schemas**: When using `--summary-schema`, always wrap properties:
    ```json
    {"type":"object","properties":{"field_name":{"type":"string"}}}
    ```
-4. **Prefer --summary over --text**: Use summaries with schemas for structured extraction instead of full text
+3. **Prefer --summary over --text**: Use summaries with schemas for structured extraction instead of full text
 
 ## Cost Optimization
 

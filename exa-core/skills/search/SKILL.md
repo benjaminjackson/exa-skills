@@ -7,16 +7,20 @@ description: Search the web for content matching a query with AI-powered semanti
 
 Token-efficient strategies for web search using exa-ai.
 
+**Use `--help` to see available commands and verify usage before running:**
+```bash
+exa-ai <command> --help
+```
+
 ## Critical Requirements
 
 **MUST follow these rules when using exa-ai search:**
 
-1. **Always run --help first**: Before using the command for the first time, run `exa-ai search --help`
-2. **Use object wrapper for schemas**: When using `--summary-schema`, always wrap properties:
+1. **Use object wrapper for schemas**: When using `--summary-schema`, always wrap properties:
    ```json
    {"type":"object","properties":{"field_name":{"type":"string"}}}
    ```
-3. **Avoid --text**: Prefer structured output with schemas over raw text extraction
+2. **Avoid --text**: Prefer structured output with schemas over raw text extraction
 
 ## Cost Optimization
 

@@ -7,6 +7,11 @@ description: Use when the user mentions Exa research OR when the workflow benefi
 
 Manage asynchronous research tasks with exa-ai for complex, multi-step research workflows.
 
+**Use `--help` to see available commands and verify usage before running:**
+```bash
+exa-ai <command> --help
+```
+
 ## Cost Optimization
 
 ### Pricing

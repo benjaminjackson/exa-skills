@@ -7,16 +7,20 @@ description: Find web content similar to a given URL using AI-powered similarity
 
 Token-efficient strategies for finding similar content using exa-ai.
 
+**Use `--help` to see available commands and verify usage before running:**
+```bash
+exa-ai <command> --help
+```
+
 ## Critical Requirements
 
 **MUST follow these rules when using exa-ai find-similar:**
 
-1. **Always run --help first**: Before using the command for the first time, run `exa-ai find-similar --help`
-2. **Use object wrapper for schemas**: When using `--summary-schema`, always wrap properties:
+1. **Use object wrapper for schemas**: When using `--summary-schema`, always wrap properties:
    ```json
    {"type":"object","properties":{"field_name":{"type":"string"}}}
    ```
-3. **Avoid --text**: Prefer structured output with schemas over raw text extraction
+2. **Avoid --text**: Prefer structured output with schemas over raw text extraction
 
 ## Token Optimization
 

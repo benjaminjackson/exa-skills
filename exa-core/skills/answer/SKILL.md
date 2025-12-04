@@ -7,16 +7,20 @@ description: Generate answers to questions with structured output using AI searc
 
 Token-efficient strategies for generating answers with structured output using exa-ai.
 
+**Use `--help` to see available commands and verify usage before running:**
+```bash
+exa-ai <command> --help
+```
+
 ## Critical Requirements
 
 **MUST follow these rules when using exa-ai answer:**
 
-1. **Always run --help first**: Before using the command for the first time, run `exa-ai answer --help`
-2. **Use object wrapper for schemas**: When using `--output-schema`, always wrap properties:
+1. **Use object wrapper for schemas**: When using `--output-schema`, always wrap properties:
    ```json
    {"type":"object","properties":{"field_name":{"type":"string"}}}
    ```
-3. **Avoid --text**: Use `--text` only when you need full source text; otherwise rely on default behavior
+2. **Avoid --text**: Use `--text` only when you need full source text; otherwise rely on default behavior
 
 ## Cost Optimization
 
