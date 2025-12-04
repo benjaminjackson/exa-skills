@@ -12,6 +12,25 @@ Automate webset updates on a schedule using monitors.
 exa-ai <command> --help
 ```
 
+## Working with Complex Shell Commands
+
+When using the Bash tool with complex shell syntax, follow these best practices for reliability:
+
+1. **Run commands directly**: Capture JSON output directly rather than nesting command substitutions
+2. **Parse in subsequent steps**: Use `jq` to parse output in a follow-up command if needed
+3. **Avoid nested substitutions**: Complex nested `$(...)` can be fragile; break into sequential steps
+
+Example:
+```bash
+# Less reliable: nested command substitution
+monitor_id=$(exa-ai monitor-create ws_abc123 --cron "0 9 * * *" --behavior-type search | jq -r '.monitor_id')
+
+# More reliable: run directly, then parse
+exa-ai monitor-create ws_abc123 --cron "0 9 * * *" --behavior-type search
+# Then in a follow-up command if needed:
+monitor_id=$(cat output.json | jq -r '.monitor_id')
+```
+
 ## Critical Requirements
 
 **MUST follow these rules when using monitors:**

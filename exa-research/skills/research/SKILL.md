@@ -12,6 +12,25 @@ Manage asynchronous research tasks with exa-ai for complex, multi-step research 
 exa-ai <command> --help
 ```
 
+## Working with Complex Shell Commands
+
+When using the Bash tool with complex shell syntax, follow these best practices for reliability:
+
+1. **Run commands directly**: Capture JSON output directly rather than nesting command substitutions
+2. **Parse in subsequent steps**: Use `jq` to parse output in a follow-up command if needed
+3. **Avoid nested substitutions**: Complex nested `$(...)` can be fragile; break into sequential steps
+
+Example:
+```bash
+# Less reliable: nested command substitution
+results=$(exa-ai research-start --instructions "query" | jq -r '.result')
+
+# More reliable: run directly, then parse
+exa-ai research-start --instructions "query"
+# Then in a follow-up command if needed:
+exa-ai research-get research_id | jq -r '.result'
+```
+
 ## Cost Optimization
 
 ### Pricing
