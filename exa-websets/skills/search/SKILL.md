@@ -183,6 +183,10 @@ exa-ai enrichment-create $webset_id \
   --description "Employee count" --format text --title "Team Size"
 ```
 
+## Interpreting Criterion Success Rates
+
+**CRITICAL**: Criteria are evaluated conditionally - when one criterion fails, others may not run. A low success rate doesn't indicate that criterion is restrictive; it means OTHER criteria are filtering results first. Only interpret a low success rate as "restrictive" when OTHER criteria have high success rates (>80%).
+
 ## Manage Websets
 
 ```bash
