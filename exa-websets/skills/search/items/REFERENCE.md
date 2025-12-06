@@ -58,8 +58,7 @@ exa-ai webset-item-delete ITEM_ID [OPTIONS]
 ```bash
 # Create webset
 webset_id=$(exa-ai webset-create \
-  --search '{"query":"tech companies","count":10}' \
-  --wait | jq -r '.webset_id')
+  --search '{"query":"tech companies","count":10}' | jq -r '.webset_id')
 
 # Review all items in pretty format
 exa-ai webset-item-list $webset_id --output-format pretty

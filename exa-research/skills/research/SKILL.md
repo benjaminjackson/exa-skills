@@ -73,7 +73,7 @@ Research tasks are asynchronous operations that allow you to:
 Initiate a new research task with instructions.
 
 ```bash
-exa-ai research-start --instructions "Find the top 10 Ruby performance optimization techniques" --wait
+exa-ai research-start --instructions "Find the top 10 Ruby performance optimization techniques"
 ```
 
 For detailed options and examples, consult [REFERENCE.md](REFERENCE.md#research-start).
@@ -104,11 +104,10 @@ For detailed options and examples, consult [REFERENCE.md](REFERENCE.md#research-
 
 ## Quick Examples
 
-### Simple Research with Wait
+### Simple Research
 ```bash
 exa-ai research-start \
-  --instructions "Find the latest breakthroughs in quantum computing" \
-  --wait
+  --instructions "Find the latest breakthroughs in quantum computing"
 ```
 
 ### Research with Structured Output
@@ -133,8 +132,7 @@ exa-ai research-start \
         }
       }
     }
-  }' \
-  --wait
+  }'
 ```
 
 ### Background Research Workflow
@@ -157,6 +155,5 @@ fi
 exa-ai research-start \
   --instructions "Comprehensive analysis of microservices vs monolithic architecture with case studies" \
   --model exa-research-pro \
-  --wait \
   --events
 ```

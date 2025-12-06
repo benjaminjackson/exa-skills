@@ -48,8 +48,7 @@ exa-ai webset-search-create ws_abc123 \
 # ✅ CORRECT: Test with count:1, then append more with SAME query
 exa-ai webset-search-create ws_abc123 \
   --query "AI startups in San Francisco founded in 2024" \
-  --count 1 \
-  --wait
+  --count 1
 
 # After validating results are good, append more with IDENTICAL query
 exa-ai webset-search-create ws_abc123 \
@@ -135,8 +134,7 @@ _Note: Always start with count:1 to validate, then scale up with the identical q
 exa-ai webset-search-create ws_abc123 \
   --query "AI startups founded in 2024" \
   --behavior append \
-  --count 1 \
-  --wait
+  --count 1
 ```
 
 ### Override Entire Collection
@@ -145,6 +143,5 @@ exa-ai webset-search-create ws_abc123 \
 exa-ai webset-search-create ws_abc123 \
   --query "top tech companies 2024" \
   --behavior override \
-  --count 1 \
-  --wait
+  --count 1
 ```

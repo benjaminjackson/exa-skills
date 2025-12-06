@@ -41,8 +41,7 @@ exa-ai enrichment-create WEBSET_ID --description TEXT --format TYPE [OPTIONS]
 exa-ai enrichment-create ws_abc123 \
   --description "Company size (number of employees)" \
   --format text \
-  --title "Team Size" \
-  --wait
+  --title "Team Size"
 ```
 
 ##### URL Enrichment
@@ -51,8 +50,7 @@ exa-ai enrichment-create ws_abc123 \
 exa-ai enrichment-create ws_abc123 \
   --description "Company website" \
   --format url \
-  --title "Website" \
-  --wait
+  --title "Website"
 ```
 
 ##### Options Enrichment (Categorical)
@@ -67,8 +65,7 @@ exa-ai enrichment-create ws_abc123 \
     {"label":"Series B"},
     {"label":"Series C+"}
   ]' \
-  --title "Funding" \
-  --wait
+  --title "Funding"
 ```
 
 ##### With Instructions
@@ -78,8 +75,7 @@ exa-ai enrichment-create ws_abc123 \
   --description "Technology stack" \
   --format text \
   --instructions "Focus on backend technologies only" \
-  --title "Tech Stack" \
-  --wait
+  --title "Tech Stack"
 ```
 
 ##### With Metadata
@@ -89,8 +85,7 @@ exa-ai enrichment-create ws_abc123 \
   --description "Company valuation" \
   --format text \
   --title "Valuation" \
-  --metadata '{"source":"public filings","confidence":"high"}' \
-  --wait
+  --metadata '{"source":"public filings","confidence":"high"}'
 ```
 
 ### enrichment-update
@@ -198,21 +193,18 @@ webset_id="ws_abc123"
 exa-ai enrichment-create $webset_id \
   --description "Company website" \
   --format url \
-  --title "Website" \
-  --wait
+  --title "Website"
 
 # Add employee count
 exa-ai enrichment-create $webset_id \
   --description "Number of employees" \
   --format text \
-  --title "Team Size" \
-  --wait
+  --title "Team Size"
 
 # Add industry category
 exa-ai enrichment-create $webset_id \
   --description "Primary industry" \
   --format options \
   --options '[{"label":"SaaS"},{"label":"Hardware"},{"label":"Biotech"},{"label":"Other"}]' \
-  --title "Industry" \
-  --wait
+  --title "Industry"
 ```

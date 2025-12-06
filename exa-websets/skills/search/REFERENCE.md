@@ -70,8 +70,7 @@ exa-ai enrichment-cancel  # Cancel running enrichment
 ```bash
 # 1. Create webset with minimal count (validate)
 webset_id=$(exa-ai webset-create \
-  --search '{"query":"AI startups","count":1}' \
-  --wait | jq -r '.webset_id')
+  --search '{"query":"AI startups","count":1}' | jq -r '.webset_id')
 
 # 2. Verify result quality
 exa-ai webset-item-list $webset_id
@@ -80,21 +79,18 @@ exa-ai webset-item-list $webset_id
 exa-ai webset-search-create $webset_id \
   --query "AI startups" \
   --mode append \
-  --count 2 \
-  --wait
+  --count 2
 
 # 4. Add enrichments after validation
 exa-ai enrichment-create $webset_id \
   --description "Company website" \
   --format url \
-  --title "Website" \
-  --wait
+  --title "Website"
 
 exa-ai enrichment-create $webset_id \
   --description "Employee count" \
   --format text \
-  --title "Team Size" \
-  --wait
+  --title "Team Size"
 ```
 
 ### CSV Import with Enrichments
@@ -107,14 +103,13 @@ import_id=$(exa-ai import-create companies.csv \
   --entity-type company | jq -r '.import_id')
 
 # 2. Create webset from import
-webset_id=$(exa-ai webset-create --import $import_id --wait | jq -r '.webset_id')
+webset_id=$(exa-ai webset-create --import $import_id | jq -r '.webset_id')
 
 # 3. Add enrichments
 exa-ai enrichment-create $webset_id \
   --description "LinkedIn profile" \
   --format url \
-  --title "LinkedIn" \
-  --wait
+  --title "LinkedIn"
 ```
 
 ## Best Practices Summary
@@ -122,7 +117,7 @@ exa-ai enrichment-create $webset_id \
 1. **Start small, validate, then scale**: Use count:1 for initial searches
 2. **Three-step workflow**: Validate → Expand → Enrich
 3. **No enrichments during validation**: Add enrichments only after confirmed results
-4. **Use --wait strategically**: For small searches (count ≤ 5) only
+4. **Avoid --wait flag**: Do NOT use `--wait` in commands. It's designed for human interactive use, not automated workflows.
 5. **Maintain query consistency**: Use exact same query when scaling up searches
 6. **Choose appropriate entity types**: For better enrichment results
 7. **Use descriptive titles**: For enrichment fields

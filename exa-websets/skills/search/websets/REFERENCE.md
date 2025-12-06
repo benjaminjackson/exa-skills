@@ -29,8 +29,7 @@ exa-ai webset-create --import import_abc \
 ```bash
 # Always start with count:1 to validate search quality before requesting more
 exa-ai webset-create \
-  --search '{"query":"AI startups in San Francisco","count":1}' \
-  --wait
+  --search '{"query":"AI startups in San Francisco","count":1}'
 ```
 
 ##### From Import
@@ -44,7 +43,7 @@ import_id=$(exa-ai import-create companies.csv \
   --entity-type company | jq -r '.import_id')
 
 # Create webset from import
-exa-ai webset-create --import $import_id --wait
+exa-ai webset-create --import $import_id
 ```
 
 ##### Save Webset ID
@@ -52,8 +51,7 @@ exa-ai webset-create --import $import_id --wait
 ```bash
 # Validate search with count:1, then scale up if results are good
 webset_id=$(exa-ai webset-create \
-  --search '{"query":"B2B SaaS companies","count":1}' \
-  --wait | jq -r '.webset_id')
+  --search '{"query":"B2B SaaS companies","count":1}' | jq -r '.webset_id')
 
 echo "Created webset: $webset_id"
 ```
@@ -63,8 +61,7 @@ echo "Created webset: $webset_id"
 ```bash
 # Search within an existing import (not the entire web)
 exa-ai webset-create \
-  --search '{"query":"C-level executives","count":10,"scope":[{"source":"import","id":"import_abc123"}]}' \
-  --wait
+  --search '{"query":"C-level executives","count":10,"scope":[{"source":"import","id":"import_abc123"}]}'
 ```
 
 ##### Scoped Search Within Webset
@@ -72,8 +69,7 @@ exa-ai webset-create \
 ```bash
 # Search within another webset
 exa-ai webset-create \
-  --search '{"query":"board members","count":5,"scope":[{"source":"webset","id":"webset_abc"}]}' \
-  --wait
+  --search '{"query":"board members","count":5,"scope":[{"source":"webset","id":"webset_abc"}]}'
 ```
 
 ##### Hop Search (Relationship Traversal)
@@ -81,8 +77,7 @@ exa-ai webset-create \
 ```bash
 # Find related entities - e.g., investors of companies in a webset
 exa-ai webset-create \
-  --search '{"query":"investors","count":1,"scope":[{"source":"webset","id":"webset_abc","relationship":{"definition":"investors of","limit":5}}]}' \
-  --wait
+  --search '{"query":"investors","count":1,"scope":[{"source":"webset","id":"webset_abc","relationship":{"definition":"investors of","limit":5}}]}'
 ```
 
 #### Search Configuration
@@ -197,8 +192,7 @@ _For the complete three-step validation workflow (Validate → Expand → Enrich
 # Create webset with minimal count
 webset_id=$(exa-ai webset-create \
   --search '{"query":"AI startups Series A","count":1}' \
-  --metadata '{"project":"market-research"}' \
-  --wait | jq -r '.webset_id')
+  --metadata '{"project":"market-research"}' | jq -r '.webset_id')
 
 # Update metadata
 exa-ai webset-update $webset_id \
@@ -222,6 +216,5 @@ Example:
 ```bash
 # Start with count:1 to validate entity type results
 exa-ai webset-create \
-  --search '{"query":"ML researchers","count":1,"category":"person"}' \
-  --wait
+  --search '{"query":"ML researchers","count":1,"category":"person"}'
 ```

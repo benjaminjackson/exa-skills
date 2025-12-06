@@ -48,7 +48,7 @@ import_id=$(exa-ai import-create companies.csv \
   --entity-type company | jq -r '.import_id')
 
 # Create webset from import
-webset_id=$(exa-ai webset-create --import $import_id --wait | jq -r '.webset_id')
+webset_id=$(exa-ai webset-create --import $import_id | jq -r '.webset_id')
 
 echo "Created webset: $webset_id"
 ```

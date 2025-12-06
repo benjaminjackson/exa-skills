@@ -198,8 +198,7 @@ exa-ai monitor-create ws_abc123 \
 ```bash
 # 1. Create webset
 webset_id=$(exa-ai webset-create \
-  --search '{"query":"AI startups","count":50}' \
-  --wait | jq -r '.webset_id')
+  --search '{"query":"AI startups","count":50}' | jq -r '.webset_id')
 
 # 2. Set up daily search monitor to add new startups
 monitor_id=$(exa-ai monitor-create $webset_id \

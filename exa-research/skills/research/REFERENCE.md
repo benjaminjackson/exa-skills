@@ -34,7 +34,7 @@ exa-ai research-start --instructions "TEXT" [OPTIONS]
 
 #### Output Control
 - `--output-schema JSON`: JSON schema for structured output (must use object wrapper!)
-- `--wait`: Wait for task to complete (polls until done)
+- `--wait`: (Avoid in automated workflows) Wait for task to complete. Designed for human interactive use, not for Claude.
 - `--events`: Include event log in output (only works with `--wait`)
 - `--output-format FMT`: `json`, `pretty`, `text`, or `toon`
 
@@ -47,21 +47,21 @@ exa-ai research-start --instructions "Find the top 10 Ruby performance optimizat
 
 Returns a research ID for later retrieval.
 
-#### Research with Wait (Recommended)
+#### Basic Research Task (Async)
 ```bash
-# Start and automatically wait for completion
+# Start research task asynchronously
 exa-ai research-start \
-  --instructions "Analyze recent trends in AI safety research" \
-  --wait
+  --instructions "Analyze recent trends in AI safety research"
 ```
 
 #### Research with Events Log
 ```bash
-# See what steps the research took
-exa-ai research-start \
-  --instructions "Compare Rust vs Go for systems programming" \
-  --wait \
-  --events
+# Save research ID, then check later with --events
+research_id=$(exa-ai research-start \
+  --instructions "Compare Rust vs Go for systems programming" | jq -r '.research_id')
+
+# Check later with events
+# exa-ai research-get $research_id --events
 ```
 
 #### Research with Structured Output
@@ -83,8 +83,7 @@ exa-ai research-start \
         }
       }
     }
-  }' \
-  --wait
+  }'
 ```
 
 #### Using Research Models
@@ -93,23 +92,20 @@ exa-ai research-start \
 ```bash
 exa-ai research-start \
   --instructions "What are webhooks and how do they work?" \
-  --model exa-research-fast \
-  --wait
+  --model exa-research-fast
 ```
 
 ##### Pro Research (Comprehensive Analysis)
 ```bash
 exa-ai research-start \
   --instructions "Comprehensive analysis of microservices vs monolithic architecture with real-world case studies" \
-  --model exa-research-pro \
-  --wait
+  --model exa-research-pro
 ```
 
 ##### Default Research (Balanced)
 ```bash
 exa-ai research-start \
-  --instructions "Latest developments in large language model reasoning capabilities" \
-  --wait
+  --instructions "Latest developments in large language model reasoning capabilities"
 ```
 
 #### Save Research ID for Later
@@ -146,18 +142,16 @@ exa-ai research-start \
       "recommendation":{"type":"string"}
     }
   }' \
-  --model exa-research-pro \
-  --wait
+  --model exa-research-pro
 ```
 
 ### Workflow Patterns
 
-#### Pattern 1: Quick Research with Wait
+#### Pattern 1: Async Research
 ```bash
-# Simplest approach - start and wait in one command
+# Start research task asynchronously
 exa-ai research-start \
-  --instructions "Find best practices for React performance optimization" \
-  --wait
+  --instructions "Find best practices for React performance optimization"
 ```
 
 #### Pattern 2: Background Research
@@ -174,19 +168,18 @@ exa-ai research-get $research_id
 
 #### Pattern 3: Structured Output for Processing
 ```bash
-# Get structured data for further processing
-result=$(exa-ai research-start \
+# Start research with structured output schema
+research_id=$(exa-ai research-start \
   --instructions "Find the top 5 programming languages for web development in 2024" \
   --output-schema '{
     "type":"object",
     "properties":{
       "languages":{"type":"array","items":{"type":"string"}}
     }
-  }' \
-  --wait)
+  }' | jq -r '.research_id')
 
-# Extract and process
-echo "$result" | jq -r '.result.languages[]'
+# Check later and extract
+# exa-ai research-get $research_id | jq -r '.result.languages[]'
 ```
 
 ### Return Values

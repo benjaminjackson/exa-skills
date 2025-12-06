@@ -38,7 +38,7 @@ webset_id=$(cat output.json | jq -r '.webset_id')
 1. **Start with minimal counts (1-5 results)**: Initial searches are test spikes to validate quality. ALWAYS default to count:1 unless user explicitly requests more.
 2. **Three-step workflow - Validate, Expand, Enrich**: (1) Create with count:1 to test search quality, (2) Expand search count if results are good, (3) Add enrichments only after validated, expanded results.
 3. **No enrichments during validation**: Never add enrichments when testing with count:1. Validate search quality first, expand count second, add enrichments last.
-4. **Use --wait strategically**: Use `--wait` with `webset-create` for small searches (count ≤ 5). Do NOT use `--wait` with `webset-search-create` (not supported).
+4. **Avoid --wait flag**: Do NOT use `--wait` flag in commands. It's designed for human interactive use, not automated workflows.
 5. **Maintain query AND criteria consistency**: When scaling up or appending searches, use the EXACT same query AND criteria that you validated. Omitting criteria causes Exa to regenerate them on-the-fly, producing inconsistent results.
 
 ## Credit Costs
@@ -82,8 +82,7 @@ Core operations for managing webset collections.
 
 ```bash
 webset_id=$(exa-ai webset-create \
-  --search '{"query":"AI startups in San Francisco","count":1}' \
-  --wait | jq -r '.webset_id')
+  --search '{"query":"AI startups in San Francisco","count":1}' | jq -r '.webset_id')
 ```
 
 ## Create with Detailed Search Criteria
@@ -104,8 +103,7 @@ exa-ai webset-create \
         "description": "Primary product is developer tools, APIs, or infrastructure"
       }
     ]
-  }' \
-  --wait
+  }'
 ```
 
 ## Create with Custom Entity
@@ -127,8 +125,7 @@ exa-ai webset-create \
         "description": "Annual operating budget between $1M and $10M"
       }
     ]
-  }' \
-  --wait
+  }'
 ```
 
 ## Create from CSV Import
@@ -140,7 +137,7 @@ import_id=$(exa-ai import-create companies.csv \
   --format csv \
   --entity-type company | jq -r '.import_id')
 
-exa-ai webset-create --import $import_id --wait
+exa-ai webset-create --import $import_id
 ```
 
 ## Three-Step Workflow: Validate → Expand → Enrich
@@ -149,8 +146,7 @@ exa-ai webset-create --import $import_id --wait
 
 ```bash
 webset_id=$(exa-ai webset-create \
-  --search '{"query":"tech startups","count":1}' \
-  --wait | jq -r '.webset_id')
+  --search '{"query":"tech startups","count":1}' | jq -r '.webset_id')
 
 exa-ai webset-item-list $webset_id
 ```
@@ -181,10 +177,10 @@ exa-ai webset-item-list $webset_id
 
 ```bash
 exa-ai enrichment-create $webset_id \
-  --description "Company website" --format url --title "Website" --wait
+  --description "Company website" --format url --title "Website"
 
 exa-ai enrichment-create $webset_id \
-  --description "Employee count" --format text --title "Team Size" --wait
+  --description "Employee count" --format text --title "Team Size"
 ```
 
 ## Manage Websets
@@ -338,7 +334,7 @@ import_id=$(exa-ai import-create companies.csv \
   --entity-type company | jq -r '.import_id')
 
 # Create webset from import
-webset_id=$(exa-ai webset-create --import $import_id --wait | jq -r '.webset_id')
+webset_id=$(exa-ai webset-create --import $import_id | jq -r '.webset_id')
 ```
 
 ## Custom Entity Type
@@ -436,15 +432,13 @@ Add structured data fields to all items in a webset using AI extraction.
 exa-ai enrichment-create ws_abc123 \
   --description "Number of employees as of latest data" \
   --format text \
-  --title "Team Size" \
-  --wait
+  --title "Team Size"
 
 # URL enrichment
 exa-ai enrichment-create ws_abc123 \
   --description "Primary company website URL" \
   --format url \
-  --title "Website" \
-  --wait
+  --title "Website"
 
 # Options enrichment
 exa-ai enrichment-create ws_abc123 \
@@ -458,8 +452,7 @@ exa-ai enrichment-create ws_abc123 \
     {"label":"Series C+"},
     {"label":"Public"}
   ]' \
-  --title "Funding Stage" \
-  --wait
+  --title "Funding Stage"
 ```
 
 ## Use Options from File
@@ -480,8 +473,7 @@ exa-ai enrichment-create ws_abc123 \
   --description "Primary industry or sector" \
   --format options \
   --options @industries.json \
-  --title "Industry" \
-  --wait
+  --title "Industry"
 ```
 
 ## Add Instructions for Precision
@@ -491,8 +483,7 @@ exa-ai enrichment-create ws_abc123 \
   --description "Technology stack" \
   --format text \
   --instructions "Focus only on backend technologies and databases. Ignore frontend frameworks." \
-  --title "Backend Tech" \
-  --wait
+  --title "Backend Tech"
 ```
 
 ## Manage Enrichments
@@ -543,9 +534,7 @@ exa-ai enrichment-cancel ws_abc123 enr_xyz789
 1. **Start small, validate, then scale**: Always use count:1 for initial searches
 2. **Follow three-step workflow**: Validate → Expand → Enrich
 3. **Never enrich during validation**: Only enrich after validated, expanded results
-4. **Use --wait strategically**:
-   - Use `--wait` with `webset-create` for small searches (count ≤ 5)
-   - Do NOT use `--wait` with `webset-search-create` (not supported)
+4. **Avoid --wait flag**: Do NOT use `--wait` in commands. It's designed for human interactive use, not automated workflows.
 5. **Maintain query AND criteria consistency**: When appending or scaling up, use IDENTICAL query and criteria from validated search. Save criteria to file for consistency.
 6. **CRITICAL - First search must use override**: The library defaults to `--behavior append`. First search on a webset MUST explicitly use `--behavior override` or it will fail with "No previous search found" error.
 7. **Use correct parameter names**:
