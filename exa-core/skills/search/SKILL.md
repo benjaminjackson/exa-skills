@@ -16,11 +16,15 @@ exa-ai <command> --help
 
 **MUST follow these rules when using exa-ai search:**
 
-1. **Use object wrapper for schemas**: When using `--summary-schema`, always wrap properties:
-   ```json
-   {"type":"object","properties":{"field_name":{"type":"string"}}}
-   ```
-2. **Avoid --text**: Prefer structured output with schemas over raw text extraction
+### Shared Requirements
+
+This skill inherits requirements from [Common Requirements](../../../docs/common-requirements.md):
+- Schema design patterns → All schema operations
+- Output format selection → All output operations
+
+### MUST NOT Rules
+
+1. **Avoid --text flag**: Prefer structured output with schemas over raw text extraction for better token efficiency
 
 ## Cost Optimization
 

@@ -16,12 +16,19 @@ exa-ai <command> --help
 
 **MUST follow these rules when using exa-ai get-contents:**
 
-1. **Always use livecrawl**: Include `--livecrawl-timeout 10000` for fresh, up-to-date content
-2. **Use object wrapper for schemas**: When using `--summary-schema`, always wrap properties:
-   ```json
-   {"type":"object","properties":{"field_name":{"type":"string"}}}
-   ```
-3. **Prefer --summary over --text**: Use summaries with schemas for structured extraction instead of full text
+### Shared Requirements
+
+This skill inherits requirements from [Common Requirements](../../../docs/common-requirements.md):
+- Schema design patterns → All schema operations
+- Output format selection → All output operations
+
+### MUST Rules
+
+1. **Always use livecrawl**: Include `--livecrawl-timeout 10000` for fresh, up-to-date content instead of cached results
+
+### SHOULD Rules
+
+1. **Prefer --summary over --text**: Use summaries with schemas for structured extraction instead of full text for better token efficiency
 
 ## Cost Optimization
 

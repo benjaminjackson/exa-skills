@@ -16,8 +16,18 @@ exa-ai <command> --help
 
 **MUST follow these rules when using exa-ai context:**
 
+### Shared Requirements
+
+This skill inherits requirements from [Common Requirements](../../../docs/common-requirements.md):
+- Output format selection → All output operations
+
+### MUST Rules
+
 1. **Use dynamic tokens**: Default `--tokens-num dynamic` adapts to content; specify exact number only when needed
-2. **Prefer text format**: Use `--output-format text` for direct use in prompts or documentation
+
+### SHOULD Rules
+
+1. **Prefer text format**: Use `--output-format text` for direct use in prompts or documentation (removes JSON wrapper overhead)
 
 ## Cost Optimization
 

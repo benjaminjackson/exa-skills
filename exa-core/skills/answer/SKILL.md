@@ -16,11 +16,15 @@ exa-ai <command> --help
 
 **MUST follow these rules when using exa-ai answer:**
 
-1. **Use object wrapper for schemas**: When using `--output-schema`, always wrap properties:
-   ```json
-   {"type":"object","properties":{"field_name":{"type":"string"}}}
-   ```
-2. **Avoid --text**: Use `--text` only when you need full source text; otherwise rely on default behavior
+### Shared Requirements
+
+This skill inherits requirements from [Common Requirements](../../../docs/common-requirements.md):
+- Schema design patterns → All schema operations
+- Output format selection → All output operations
+
+### MUST NOT Rules
+
+1. **Avoid --text flag**: Use `--text` only when you need full source text; otherwise rely on default behavior for better token efficiency
 
 ## Cost Optimization
 
