@@ -1,14 +1,4 @@
-# Common Requirements
-
-Critical requirements that apply across multiple exa-ai skills.
-
-**Purpose**: This file consolidates shared rules to reduce duplication across SKILL.md files and improve token efficiency. Individual skills reference these requirements instead of repeating them.
-
----
-
 ## Schema Design
-
-<schema-design>
 
 ### MUST: Use object wrapper for schemas
 
@@ -38,13 +28,9 @@ exa-ai search "AI news" \
   --summary-schema '{"properties":{"headline":{"type":"string"}}}'
 ```
 
-</schema-design>
-
 ---
 
 ## Output Format Selection
-
-<output-format-selection>
 
 ### MUST NOT: Mix toon format with jq
 
@@ -88,13 +74,9 @@ Pick one strategy and stick with it throughout your workflow:
 
 **Why**: Mixing approaches increases complexity and token usage. Choosing one approach optimizes for your use case.
 
-</output-format-selection>
-
 ---
 
 ## Shell Command Best Practices
-
-<shell-command-best-practices>
 
 ### MUST: Run commands directly, parse separately
 
@@ -149,54 +131,3 @@ exa-ai webset-search-create $webset_id --query "AI" --behavior override
 ```
 
 **Why**: Sequential steps are easier to understand, debug, and modify. Each step can be verified independently.
-
-</shell-command-best-practices>
-
----
-
-## Reference Guide
-
-### How Skills Use This File
-
-Individual SKILL.md files have these common requirements **inlined** (not referenced) in their Critical Requirements section.
-
-When you update this file, run `scripts/inline-requirements.rb` to propagate changes to all SKILL.md files.
-
-**Why inlining instead of references?**
-Skills are loaded in isolation by Claude Code. Markdown references to other files aren't guaranteed to be loaded, so we inline the content directly to ensure it's always available.
-
-### Token Efficiency Benefits
-
-**Before** (duplicated across 4 skills):
-- Schema wrapper rule: ~60 tokens × 4 = 240 tokens
-- Output format rule: ~80 tokens × 5 = 400 tokens
-- Shell command rule: ~70 tokens × 3 = 210 tokens
-- **Total**: 850 tokens
-
-**After** (with common-requirements.md):
-- Reference in each skill: ~20 tokens × N skills = ~160 tokens
-- Common requirements (loaded once): ~500 tokens
-- **Total**: ~660 tokens
-- **Savings**: ~22% reduction (increases with more shared rules)
-
-### When to Add New Common Requirements
-
-Add a rule to this file when:
-1. The rule applies to 3+ skills
-2. The rule has identical wording across skills
-3. The rule describes a fundamental constraint or best practice
-4. Centralizing it would reduce confusion and maintenance burden
-
-### When to Keep Rules in Individual Skills
-
-Keep a rule in an individual SKILL.md when:
-1. The rule is specific to that tool's unique functionality
-2. The rule applies to only 1-2 skills
-3. The rule requires tool-specific context or examples
-4. The rule describes edge cases specific to that tool
-
----
-
-## Version History
-
-- **2025-12-09**: Initial creation with schema design, output format, and shell command requirements
