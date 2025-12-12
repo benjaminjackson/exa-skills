@@ -12,7 +12,9 @@ Critical requirements that apply across multiple exa-ai skills.
 
 **Applies to**: answer, search, find-similar, get-contents
 
-When using schema parameters (`--output-schema` or `--summary-schema`), always wrap properties in an object:
+When using schema parameters (`--output-schema` or `--summary-schema`), always wrap properties in an object.
+
+**Note**: This is a JSON Schema requirement, not an Exa-specific limitation.
 
 ```json
 {"type":"object","properties":{"field_name":{"type":"string"}}}
@@ -146,24 +148,12 @@ exa-ai webset-search-create $webset_id --query "AI" --behavior override
 
 ### How Skills Use This File
 
-Individual SKILL.md files reference these common requirements in their Critical Requirements section:
+Individual SKILL.md files have these common requirements **inlined** (not referenced) in their Critical Requirements section.
 
-```markdown
-## Critical Requirements
+When you update this file, run `scripts/inline-requirements.rb` to propagate changes to all SKILL.md files.
 
-**MUST follow these rules when using [skill-name]:**
-
-### Shared Requirements
-
-This skill inherits requirements from [Common Requirements](../../../docs/common-requirements.md):
-- Schema design patterns → All schema operations
-- Output format selection → All output operations
-- Shell command best practices → All complex commands
-
-### Tool-Specific MUST Rules
-
-1. **[Specific to this tool]**: [Description]
-```
+**Why inlining instead of references?**
+Skills are loaded in isolation by Claude Code. Markdown references to other files aren't guaranteed to be loaded, so we inline the content directly to ensure it's always available.
 
 ### Token Efficiency Benefits
 
