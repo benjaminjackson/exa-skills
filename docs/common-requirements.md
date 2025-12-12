@@ -8,6 +8,8 @@ Critical requirements that apply across multiple exa-ai skills.
 
 ## Schema Design
 
+<schema-design>
+
 ### MUST: Use object wrapper for schemas
 
 **Applies to**: answer, search, find-similar, get-contents
@@ -36,9 +38,13 @@ exa-ai search "AI news" \
   --summary-schema '{"properties":{"headline":{"type":"string"}}}'
 ```
 
+</schema-design>
+
 ---
 
 ## Output Format Selection
+
+<output-format-selection>
 
 ### MUST NOT: Mix toon format with jq
 
@@ -82,9 +88,13 @@ Pick one strategy and stick with it throughout your workflow:
 
 **Why**: Mixing approaches increases complexity and token usage. Choosing one approach optimizes for your use case.
 
+</output-format-selection>
+
 ---
 
 ## Shell Command Best Practices
+
+<shell-command-best-practices>
 
 ### MUST: Run commands directly, parse separately
 
@@ -139,6 +149,8 @@ exa-ai webset-search-create $webset_id --query "AI" --behavior override
 ```
 
 **Why**: Sequential steps are easier to understand, debug, and modify. Each step can be verified independently.
+
+</shell-command-best-practices>
 
 ---
 
