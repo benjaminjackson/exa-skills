@@ -26,6 +26,82 @@ exa-ai <command> --help
 
 **Applies to**: answer, search, find-similar, get-contents
 
+When using schema parameters (`--output-schema` or `--summary-schema`), always wrap properties in an object:
+
+```json
+{"type":"object","properties":{"field_name":{"type":"string"}}}
+```
+
+**DO NOT** use bare properties without the object wrapper:
+```json
+{"properties":{"field_name":{"type":"string"}}}  // ❌ Missing "type":"object"
+```
+
+**Why**: The Exa API requires a valid JSON Schema with an object type at the root level. Omitting this causes validation errors.
+
+**Examples**:
+```bash
+# ✅ CORRECT - object wrapper included
+exa-ai search "AI news" \
+  --summary-schema '{"type":"object","properties":{"headline":{"type":"string"}}}'
+
+# ❌ WRONG - missing object wrapper
+exa-ai search "AI news" \
+  --summary-schema '{"properties":{"headline":{"type":"string"}}}'
+```
+
+
+#### Output Format Selection
+
+### MUST NOT: Mix toon format with jq
+
+**Applies to**: answer, context, search, find-similar, get-contents
+
+`toon` format produces YAML-like output, not JSON. DO NOT pipe toon output to jq for parsing:
+
+```bash
+# ❌ WRONG - toon is not JSON
+exa-ai search "query" --output-format toon | jq -r '.results'
+
+# ✅ CORRECT - use JSON (default) with jq
+exa-ai search "query" | jq -r '.results[].title'
+
+# ✅ CORRECT - use toon for direct reading only
+exa-ai search "query" --output-format toon
+```
+
+**Why**: jq expects valid JSON input. toon format is designed for human readability and produces YAML-like output that jq cannot parse.
+
+### SHOULD: Choose one output approach
+
+**Applies to**: answer, context, search, find-similar, get-contents
+
+Pick one strategy and stick with it throughout your workflow:
+
+1. **Approach 1: toon only** - Compact YAML-like output for direct reading
+   - Use when: Reading output directly, no further processing needed
+   - Token savings: ~40% reduction vs JSON
+   - Example: `exa-ai search "query" --output-format toon`
+
+2. **Approach 2: JSON + jq** - Extract specific fields programmatically
+   - Use when: Need to extract specific fields or pipe to other commands
+   - Token savings: ~80-90% reduction (extracts only needed fields)
+   - Example: `exa-ai search "query" | jq -r '.results[].title'`
+
+3. **Approach 3: Schemas + jq** - Structured data extraction with validation
+   - Use when: Need consistent structured output across multiple queries
+   - Token savings: ~85% reduction + consistent schema
+   - Example: `exa-ai search "query" --summary-schema '{...}' | jq -r '.results[].summary | fromjson'`
+
+**Why**: Mixing approaches increases complexity and token usage. Choosing one approach optimizes for your use case.
+
+
+</shared-requirements>#### Schema Design
+
+### MUST: Use object wrapper for schemas
+
+**Applies to**: answer, search, find-similar, get-contents
+
 When using schema parameters (`--output-schema` or `--summary-schema`), always wrap properties in an object.
 
 **Note**: This is a JSON Schema requirement, not an Exa-specific limitation.

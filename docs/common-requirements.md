@@ -12,9 +12,7 @@ Critical requirements that apply across multiple exa-ai skills.
 
 **Applies to**: answer, search, find-similar, get-contents
 
-When using schema parameters (`--output-schema` or `--summary-schema`), always wrap properties in an object.
-
-**Note**: This is a JSON Schema requirement, not an Exa-specific limitation.
+When using schema parameters (`--output-schema` or `--summary-schema`), always wrap properties in an object:
 
 ```json
 {"type":"object","properties":{"field_name":{"type":"string"}}}
